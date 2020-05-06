@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 import javax.inject.Singleton;
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * Default NewRelicInsightsService, sends events to the New Relic API in real time, with a blocking request.
@@ -41,15 +42,17 @@ public class DefaultNewRelicInsightsService implements NewRelicInsightsService {
     private static final Logger LOGGER = LoggerFactory.getLogger(NewRelicInsightsService.class);
 
     private final NewRelicInsightsClient client;
+    private final EventPayloadExtractor extractor;
 
-    public DefaultNewRelicInsightsService(NewRelicInsightsClient client) {
+    public DefaultNewRelicInsightsService(NewRelicInsightsClient client, EventPayloadExtractor extractor) {
         this.client = client;
+        this.extractor = extractor;
     }
 
     @Override
-    public void createEvents(@Nonnull @Valid Collection<NewRelicInsightsEvent> events) {
+    public <E> void createEvents(@Nonnull @Valid Collection<E> events) {
         try {
-            this.client.createEvents(events);
+            this.client.createEvents(events.stream().map(extractor::extractPayload).collect(Collectors.toList()));
         } catch (Exception ex) {
             LOGGER.error("Exception creating New Relic events " + ex);
         }

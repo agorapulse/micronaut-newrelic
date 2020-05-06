@@ -24,6 +24,8 @@ import io.micronaut.http.annotation.Post;
 import io.micronaut.http.client.RxHttpClient;
 import io.micronaut.http.client.annotation.Client;
 
+import java.util.Map;
+
 @Client("${newrelic.url}")
 @Header(name="X-Insert-Key", value="${newrelic.token}")
 @Requires(property = "newrelic.url", classes = RxHttpClient.class)
@@ -32,6 +34,6 @@ public interface NewRelicInsightsClient {
 
     @Post("/events")
     @Header(name="Content-type", value="application/json")
-    void createEvents(@Body Iterable<NewRelicInsightsEvent> events);
+    void createEvents(@Body Iterable<Map<String, Object>> events);
 
 }

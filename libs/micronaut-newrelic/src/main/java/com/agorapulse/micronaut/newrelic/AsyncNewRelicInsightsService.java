@@ -20,14 +20,11 @@ package com.agorapulse.micronaut.newrelic;
 import com.newrelic.api.agent.Insights;
 import com.newrelic.api.agent.NewRelic;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.beans.BeanIntrospection;
-import io.micronaut.core.beans.BeanIntrospector;
 
 import javax.annotation.Nonnull;
 import javax.inject.Singleton;
 import javax.validation.Valid;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -38,38 +35,23 @@ import java.util.Map;
 public class AsyncNewRelicInsightsService implements NewRelicInsightsService {
 
     private final Insights insights;
-    private final BeanIntrospector introspector = BeanIntrospector.SHARED;
+    private final EventPayloadExtractor extractor;
 
-    public AsyncNewRelicInsightsService(Insights insights) {
+    public AsyncNewRelicInsightsService(Insights insights, EventPayloadExtractor extractor) {
         this.insights = insights;
+        this.extractor = extractor;
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public void createEvent(@Nonnull @Valid NewRelicInsightsEvent event) {
-        BeanIntrospection<NewRelicInsightsEvent> introspection = (BeanIntrospection<NewRelicInsightsEvent>) introspector
-            .findIntrospection(event.getClass())
-            .orElseThrow(() ->
-                //should never happen ad the core event is annotated with @Introspected
-                new IllegalArgumentException("Cannot find introspection for class " + event.getClass() + ". Please, annotate the class with @Introspected")
-            );
-
-        String[] propertyNames = introspection.getPropertyNames();
-        Map<String, Object> map = new HashMap<>(propertyNames.length - 1);
-
-        for (String name : propertyNames) {
-            if ("eventType".equals(name)) {
-                continue;
-            }
-            map.put(name, introspection.getProperty(name).map(p -> p.get(event)).orElse(null));
-        }
-
-        insights.recordCustomEvent(event.getEventType(), map);
+    public <E> void createEvent(@Nonnull @Valid E event) {
+        Map<String, Object> map = extractor.extractPayload(event);
+        Object eventType = map.remove("eventType");
+        insights.recordCustomEvent(eventType.toString(), map);
     }
 
     @Override
-    public void createEvents(@Nonnull @Valid Collection<NewRelicInsightsEvent> events) {
-        for (NewRelicInsightsEvent event : events) {
+    public <E> void createEvents(@Nonnull @Valid Collection<E> events) {
+        for (E event : events) {
             createEvent(event);
         }
     }
