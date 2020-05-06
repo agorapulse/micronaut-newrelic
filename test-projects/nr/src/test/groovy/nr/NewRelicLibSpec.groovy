@@ -37,6 +37,8 @@ import javax.validation.ConstraintViolationException
 class NewRelicLibSpec extends Specification {
 
     public static final String TEST_EVENT = 'TestEvent'
+    public static final String KEY = 'key'
+    public static final Long VALUE = 42L
 
     @AutoCleanup ApplicationContext context
 
@@ -84,12 +86,13 @@ class NewRelicLibSpec extends Specification {
                 arguments = payload
             }
         when:
-            service.createEvents([NewRelicInsightsEvent.create(TEST_EVENT)])
+            service.createEvents([NewRelicInsightsEvent.create(TEST_EVENT, KEY, VALUE)])
         then:
             arguments
             !arguments.eventType
             arguments.timestamp
-            arguments.value == 1L
+            arguments.value == VALUE
+            arguments.key == KE
     }
 
     @Unroll

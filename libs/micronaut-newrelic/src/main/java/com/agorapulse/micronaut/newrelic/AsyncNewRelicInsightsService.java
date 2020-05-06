@@ -34,7 +34,7 @@ import java.util.Map;
  * Async NewRelicInsightsService, which uses the New Relic Java agent to send events by batch, every minute.
  */
 @Singleton
-@Requires(classes = NewRelic.class, condition = NewRelicAgentPresent.class)
+@Requires(classes = NewRelic.class, condition = NewRelicAgentPresentCondition.class)
 public class AsyncNewRelicInsightsService implements NewRelicInsightsService {
 
     private final Insights insights;

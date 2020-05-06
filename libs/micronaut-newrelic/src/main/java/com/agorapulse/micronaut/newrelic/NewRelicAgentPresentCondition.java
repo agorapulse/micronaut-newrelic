@@ -20,14 +20,14 @@ package com.agorapulse.micronaut.newrelic;
 import io.micronaut.context.condition.Condition;
 import io.micronaut.context.condition.ConditionContext;
 
-public class NewRelicAgentPresent implements Condition {
+public class NewRelicAgentPresentCondition implements Condition {
 
     @Override
     public boolean matches(ConditionContext context) {
         try {
             Class<?> newRelicAgent = Class.forName("com.newrelic.api.agent.Agent");
-            context.getBeanContext().getBean(newRelicAgent);
-            boolean isNoop = newRelicAgent.getSimpleName().toLowerCase().contains("noop");
+            Object agent = context.getBeanContext().getBean(newRelicAgent);
+            boolean isNoop = agent.getClass().getSimpleName().toLowerCase().contains("noop");
             if (isNoop) {
                 context.fail("NewRelic agent is NoOpAgent");
                 return false;
