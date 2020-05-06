@@ -115,6 +115,7 @@ subprojects { subproject ->
     if (subproject.name == 'guide') return
 
     apply plugin: 'groovy'
+    apply plugin: 'java-library'
 
     dependencies {
         // add your global dependencies
@@ -143,6 +144,17 @@ subprojects { subproject ->
     }
 
     clean.dependsOn cleanOut
+
+    dependencies {
+        testImplementation('org.spockframework:spock-core') {
+            exclude group: 'org.codehaus.groovy', module: 'groovy-all'
+        }
+        testImplementation 'net.bytebuddy:byte-buddy:1.10.6'
+        testImplementation 'org.objenesis:objenesis:3.1'
+
+        testImplementation 'com.stehno.ersatz:ersatz:1.9.0'
+        testImplementation 'io.undertow:undertow-core:2.0.13.Final'
+    }
 }
 
 check.dependsOn('aggregateCheckstyle', 'aggregateCodenarc', 'aggregateAllTestReports', 'coveralls')
