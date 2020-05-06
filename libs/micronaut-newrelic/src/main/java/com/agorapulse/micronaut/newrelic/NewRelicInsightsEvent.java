@@ -24,7 +24,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * Interface describing a New Relic NRQL Event. Classes extending it will automatically transformed into JSON when sent
+ * Optinal interface describing a New Relic NRQL Event. Classes extending it will automatically transformed into JSON when sent
  * to the New Relic API by the Micronaut HTTP client.
  */
 @Validated

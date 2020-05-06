@@ -41,7 +41,7 @@ public class FallbackNewRelicInsightsService implements NewRelicInsightsService 
     }
 
     @Override
-    public void createEvents(@Nonnull @Valid Collection<NewRelicInsightsEvent> events) {
+    public <E> void createEvents(@Nonnull @Valid Collection<E> events) {
         try {
             LOGGER.info("Following events not sent to NewRelic:\n" + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(events));
         } catch (JsonProcessingException e) {

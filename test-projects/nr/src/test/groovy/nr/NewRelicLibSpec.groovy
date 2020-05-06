@@ -24,6 +24,7 @@ import com.agorapulse.micronaut.newrelic.NewRelicInsightsService
 import com.newrelic.api.agent.Agent
 import com.newrelic.api.agent.Insights
 import io.micronaut.context.ApplicationContext
+import io.micronaut.core.annotation.Introspected
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -33,6 +34,8 @@ import javax.validation.ConstraintViolationException
 @SuppressWarnings([
     'Instanceof',
     'DuplicateListLiteral',
+    'DuplicateStringLiteral',
+    'DuplicateNumberLiteral',
 ])
 class NewRelicLibSpec extends Specification {
 
@@ -92,7 +95,30 @@ class NewRelicLibSpec extends Specification {
             !arguments.eventType
             arguments.timestamp
             arguments.value == VALUE
-            arguments.key == KE
+            arguments.key == KEY
+    }
+
+    void 'send POGO event'() {
+        given:
+            Map<String, Object> arguments = [:]
+            insights.recordCustomEvent(TEST_EVENT, _) >> { String eventType, Map<String, Object> payload ->
+                arguments = payload
+            }
+        when:
+            service.createEvent(new TestEvent(foo: 'bar', bar: 101))
+        then:
+            arguments
+            !arguments.eventType
+            arguments.timestamp
+            arguments.foo == 'bar'
+            arguments.bar == 101
+    }
+
+    void 'send not introspected event'() {
+        when:
+            service.createEvent(new NotIntrospected(foo: 'bar'))
+        then:
+            thrown(ConstraintViolationException)
     }
 
     @Unroll
@@ -114,5 +140,19 @@ class NewRelicLibSpec extends Specification {
         where:
             value << [null, '']
     }
+
+}
+
+@Introspected
+class TestEvent {
+
+    String foo
+    Long bar
+
+}
+
+class NotIntrospected {
+
+    String foo
 
 }

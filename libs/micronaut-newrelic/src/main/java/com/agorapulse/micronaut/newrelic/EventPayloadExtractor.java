@@ -17,17 +17,18 @@
  */
 package com.agorapulse.micronaut.newrelic;
 
-import javax.annotation.Nonnull;
-import javax.validation.Valid;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Map;
 
-public interface NewRelicInsightsService {
+public interface EventPayloadExtractor {
 
-    default <E> void createEvent(@Valid @Nonnull E event) {
-        createEvents(Collections.singleton(event));
-    }
-
-    <E> void createEvents(@Valid @Nonnull Collection<E> events);
+    /**
+     * Extracts the paylaod for the event.
+     *
+     * The payload always contains keys <code>eventType</code> and <code>timestamp</code>
+     * @param event the event object
+     * @param <E> the type of the event
+     * @return payload map which always contains the keys <code>eventType</code> and <code>timestamp</code>
+     */
+    <E> Map<String, Object> extractPayload(E event);
 
 }
