@@ -95,6 +95,15 @@ config {
             toolVersion = '1.5'
         }
     }
+
+    docs {
+        groovydoc {
+            enabled = false
+            aggregate {
+                enabled = false
+            }
+        }
+    }
 }
 
 allprojects {
