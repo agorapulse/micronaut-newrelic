@@ -1,0 +1,72 @@
+
+[[_installation]]
+= Installation
+
+Micronaut NewRelic library helps to send the custom events to NewRelic.
+
+There are two real implementations of the client - using HTTP client and using
+the NewRelic Java library - and the default implementation which logs the events' JSON
+into the `com.agorapulse.micronaut.newrelic.NewRelicInsightsService` log.
+
+== Default Implementation
+
+If you are developing a library then you can let the developers to pick the
+implementation later. You can just depend on this library:
+
+[source,groovy,subs='verbatim,attributes']
+----
+repositories {
+    jcenter()
+}
+
+dependencies {
+    // standard micronaut dependencies
+    implementation 'com.agorapulse:micronaut-newrelic:{project-version}'
+}
+----
+
+== HTTP Client
+
+To enable HTTP client implementation you have to depend on this library
+and `micronaut-http-client`:
+
+[source,groovy,subs='verbatim,attributes']
+----
+repositories {
+    jcenter()
+}
+
+dependencies {
+    // standard micronaut dependencies
+    implementation 'com.agorapulse:micronaut-newrelic:{project-version}'
+    implementation 'io.micronaut:micronaut-http-client'
+}
+----
+
+You also need to specify the `newrelic.url` and `newrelic.token` properties:
+
+[source,yml,subs='verbatim,attributes']
+----
+newrelic:
+    url: https://insights-collector.newrelic.com/v1/accounts/123456
+    token: abcdef1234567890
+----
+
+== NewRelic Library
+
+To enable NewRelic client implementation you have to depend on this library
+and NewRelic Java library and the Java agent must be running alongside.
+
+[source,groovy,subs='verbatim,attributes']
+----
+repositories {
+    jcenter()
+}
+
+dependencies {
+    // standard micronaut dependencies
+    implementation 'com.agorapulse:micronaut-newrelic:{project-version}'
+    implementation 'com.newrelic.agent.java:newrelic-api:4.9.0'
+}
+----
+

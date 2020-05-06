@@ -2,4 +2,4 @@
 [[_introduction]]
 = Introduction
 
-Lorem ipsum dolor sit amet
+Micronaut NewRelic library helps to send the custom events to NewRelic.
