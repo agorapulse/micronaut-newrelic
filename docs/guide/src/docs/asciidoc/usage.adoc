@@ -18,5 +18,7 @@ The events can be of any class which is annotated with `@Introspected`.
 In that case the event type will be same as the name of the events' class
 e.g. `MyEvent`.
 
+WARNING: If you are using the library in non-micronaut environment (e.g. Grails) then ensure your `@Introspected` classes are processed either by `micronaut-inject-java` or `micronaut-inject-groovy` processors.
+
 The events can optionally implement `NewRelicInsightsEvent` interface
 which let you fine tune the `eventType` and `timestamp` properties.
