@@ -19,6 +19,7 @@ package com.agorapulse.micronaut.newrelic;
 
 import com.newrelic.api.agent.Insights;
 import com.newrelic.api.agent.NewRelic;
+import io.micronaut.context.annotation.Primary;
 import io.micronaut.context.annotation.Requires;
 
 import javax.annotation.Nonnull;
@@ -31,6 +32,7 @@ import java.util.Map;
  * Async NewRelicInsightsService, which uses the New Relic Java agent to send events by batch, every minute.
  */
 @Singleton
+@Primary
 @Requires(classes = NewRelic.class, condition = NewRelicAgentPresentCondition.class)
 public class AsyncNewRelicInsightsService implements NewRelicInsightsService {
 
