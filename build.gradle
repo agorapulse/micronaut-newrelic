@@ -164,6 +164,13 @@ subprojects { subproject ->
         testImplementation 'com.stehno.ersatz:ersatz:1.9.0'
         testImplementation 'io.undertow:undertow-core:2.0.13.Final'
     }
+    
+    config {
+        bintray {
+            name = subproject.name
+            githubRepo = slug
+        }
+    }
 }
 
 check.dependsOn('aggregateCheckstyle', 'aggregateCodenarc', 'aggregateAllTestReports', 'coveralls')
