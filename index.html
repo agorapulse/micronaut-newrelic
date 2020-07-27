@@ -92,7 +92,7 @@ $(addBlockSwitches);
 <h1>Micronaut Newrelic Library</h1>
 <div class="details">
 <span id="author" class="author">Vladimir Orany</span><br>
-<span id="revnumber">version 1.0.2</span>
+<span id="revnumber">version 1.0.3</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -144,7 +144,7 @@ implementation later. You can just depend on this library:</p>
 
 dependencies {
     // standard micronaut dependencies
-    implementation 'com.agorapulse:micronaut-newrelic:1.0.2'
+    implementation 'com.agorapulse:micronaut-newrelic:1.0.3'
 }</code></pre>
 </div>
 </div>
@@ -163,7 +163,7 @@ and <code>micronaut-http-client</code>:</p>
 
 dependencies {
     // standard micronaut dependencies
-    implementation 'com.agorapulse:micronaut-newrelic:1.0.2'
+    implementation 'com.agorapulse:micronaut-newrelic:1.0.3'
     implementation 'io.micronaut:micronaut-http-client'
 }</code></pre>
 </div>
@@ -193,7 +193,7 @@ and NewRelic Java library and the Java agent must be running alongside.</p>
 
 dependencies {
     // standard micronaut dependencies
-    implementation 'com.agorapulse:micronaut-newrelic:1.0.2'
+    implementation 'com.agorapulse:micronaut-newrelic:1.0.3'
     implementation 'com.newrelic.agent.java:newrelic-api:4.9.0'
 }</code></pre>
 </div>
@@ -222,6 +222,18 @@ newRelicInsightsService.createEvents(Arrays.asList(
 In that case the event type will be same as the name of the events' class
 e.g. <code>MyEvent</code>.</p>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+If you are using the library in non-micronaut environment (e.g. Grails) then ensure your <code>@Introspected</code> classes are processed either by <code>micronaut-inject-java</code> or <code>micronaut-inject-groovy</code> processors.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>The events can optionally implement <code>NewRelicInsightsEvent</code> interface
 which let you fine tune the <code>eventType</code> and <code>timestamp</code> properties.</p>
@@ -242,8 +254,8 @@ which let you fine tune the <code>eventType</code> and <code>timestamp</code> pr
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.0.2<br>
-Last updated 2020-05-28 09:20:22 UTC
+Version 1.0.3<br>
+Last updated 2020-07-27 09:15:52 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
