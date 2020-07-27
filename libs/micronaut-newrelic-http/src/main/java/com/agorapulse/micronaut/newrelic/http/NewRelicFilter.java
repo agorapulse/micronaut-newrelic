@@ -17,9 +17,7 @@
  */
 package com.agorapulse.micronaut.newrelic.http;
 
-import com.newrelic.api.agent.Agent;
-import com.newrelic.api.agent.TransactionNamePriority;
-import io.micronaut.context.annotation.Requires;
+import com.newrelic.api.agent.Token;
 import io.micronaut.http.HttpAttributes;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
@@ -29,23 +27,20 @@ import io.micronaut.http.filter.ServerFilterChain;
 import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 @Filter("/**")
-@Requires(beans = Agent.class)
 public class NewRelicFilter implements HttpServerFilter {
-
-    private final Agent agent;
-
-    public NewRelicFilter(Agent agent) {
-        this.agent = agent;
-    }
 
     @Override
     public Publisher<MutableHttpResponse<?>> doFilter(HttpRequest<?> request, ServerFilterChain chain) {
+        AtomicReference<Token> token = new AtomicReference<>();
         return Flowable.fromCallable(() -> {
             String templateOrUri = request.getAttribute(HttpAttributes.URI_TEMPLATE, String.class).orElseGet(() -> request.getUri().toString());
-            agent.getTransaction().setTransactionName(TransactionNamePriority.REQUEST_URI, true, templateOrUri);
+            token.set(NewRelicUtil.startTransaction(templateOrUri));
             return true;
-        }).switchMap(any -> chain.proceed(request));
+        }).switchMap(any -> chain.proceed(request)).doOnNext(resp -> {
+            token.get().expire();
+        });
     }
-
 }
