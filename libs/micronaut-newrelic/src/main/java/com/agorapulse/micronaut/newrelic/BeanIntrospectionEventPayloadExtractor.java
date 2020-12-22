@@ -46,6 +46,7 @@ public class BeanIntrospectionEventPayloadExtractor implements EventPayloadExtra
         for (String name : propertyNames) {
             introspection.getProperty(name)
                 .flatMap(p -> Optional.ofNullable(p.get(event)))
+                .map(v -> (v instanceof Boolean || v instanceof Number) ? v : String.valueOf(v))
                 .ifPresent(v -> map.put(name, v));
         }
 
