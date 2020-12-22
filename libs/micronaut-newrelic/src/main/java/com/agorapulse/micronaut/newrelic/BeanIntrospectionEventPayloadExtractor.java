@@ -23,6 +23,7 @@ import io.micronaut.core.beans.BeanIntrospector;
 import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Singleton
 public class BeanIntrospectionEventPayloadExtractor implements EventPayloadExtractor {
@@ -43,7 +44,10 @@ public class BeanIntrospectionEventPayloadExtractor implements EventPayloadExtra
         Map<String, Object> map = new HashMap<>(propertyNames.length - 1);
 
         for (String name : propertyNames) {
-            map.put(name, introspection.getProperty(name).map(p -> p.get(event)).orElse(null));
+            introspection.getProperty(name)
+                .flatMap(p -> Optional.ofNullable(p.get(event)))
+                .map(v -> (v instanceof Boolean || v instanceof Number) ? v : String.valueOf(v))
+                .ifPresent(v -> map.put(name, v));
         }
 
         map.computeIfAbsent("eventType", k -> introspection.getBeanType().getSimpleName());
