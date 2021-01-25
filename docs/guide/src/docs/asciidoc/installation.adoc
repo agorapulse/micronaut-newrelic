@@ -40,6 +40,9 @@ dependencies {
     // standard micronaut dependencies
     implementation 'com.agorapulse:micronaut-newrelic:{project-version}'
     implementation 'io.micronaut:micronaut-http-client'
+
+    // for reporting micronaut URL from the controllers
+    implementation 'com.agorapulse:micronaut-newrelic-http:{project-version}'
 }
 ----
 
@@ -67,6 +70,9 @@ dependencies {
     // standard micronaut dependencies
     implementation 'com.agorapulse:micronaut-newrelic:{project-version}'
     implementation 'com.newrelic.agent.java:newrelic-api:4.9.0'
+
+    // for reporting micronaut URL from the controllers
+    implementation 'com.agorapulse:micronaut-newrelic-http:{project-version}'
 }
 ----
 
