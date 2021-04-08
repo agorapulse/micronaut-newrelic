@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2020 Agorapulse.
+ * Copyright 2021 Agorapulse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ dependencies {
 
     // We don't have a runtime dependency on NR to be able to use the plain HTTP synchronous client on Lambdas.
     compileOnly 'io.micronaut:micronaut-http-client'
-    compileOnly 'com.newrelic.agent.java:newrelic-api:6.1.0'
+    compileOnly 'com.newrelic.agent.java:newrelic-api:6.4.2'
     compileOnly "com.agorapulse:micronaut-grails:$micronautGrailsVersion"
 
     testCompileOnly 'io.micronaut:micronaut-inject-groovy'
