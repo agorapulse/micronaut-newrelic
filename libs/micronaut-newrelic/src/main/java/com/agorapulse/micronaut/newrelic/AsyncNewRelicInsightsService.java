@@ -19,6 +19,7 @@ package com.agorapulse.micronaut.newrelic;
 
 import com.newrelic.api.agent.Insights;
 import com.newrelic.api.agent.NewRelic;
+import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
 
 import javax.annotation.Nonnull;
@@ -32,6 +33,7 @@ import java.util.Map;
  */
 @Singleton
 @Requires(classes = NewRelic.class, condition = NewRelicAgentPresentCondition.class)
+@Replaces(FallbackNewRelicInsightsService.class)
 public class AsyncNewRelicInsightsService implements NewRelicInsightsService {
 
     private final Insights insights;
