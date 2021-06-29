@@ -15,13 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// delete if this subproject should not be published to BinTray
-config {
-    bintray {
-        enabled = true
-    }
-}
-
 dependencies {
     annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
     api platform("io.micronaut:micronaut-bom:$micronautVersion")
@@ -37,19 +30,7 @@ dependencies {
     compileOnly 'com.newrelic.agent.java:newrelic-api:6.4.2'
     compileOnly "com.agorapulse:micronaut-grails:$micronautGrailsVersion"
 
-    testCompileOnly 'io.micronaut:micronaut-inject-groovy'
-
     testImplementation "com.agorapulse:micronaut-grails:$micronautGrailsVersion"
-
-    testImplementation('org.spockframework:spock-core') {
-        exclude group: 'org.codehaus.groovy', module: 'groovy-all'
-    }
-    testImplementation 'net.bytebuddy:byte-buddy:1.10.6'
-    testImplementation 'org.objenesis:objenesis:3.1'
-
-    testImplementation 'com.stehno.ersatz:ersatz:1.9.0'
-    testImplementation 'io.undertow:undertow-core:2.0.13.Final'
-
     testImplementation 'org.springframework:spring-test:5.2.6.RELEASE'
     testImplementation 'org.spockframework:spock-spring:1.3-groovy-2.4'
 }
