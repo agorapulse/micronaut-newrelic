@@ -18,7 +18,6 @@
 package com.agorapulse.micronaut.newrelic;
 
 import io.micronaut.context.annotation.Primary;
-import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
