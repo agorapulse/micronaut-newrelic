@@ -20,6 +20,7 @@ package nrhttp
 import com.agorapulse.micronaut.newrelic.DefaultNewRelicInsightsService
 import com.agorapulse.micronaut.newrelic.NewRelicInsightsClient
 import com.agorapulse.micronaut.newrelic.NewRelicInsightsService
+import com.newrelic.api.agent.Agent
 import io.micronaut.context.ApplicationContext
 import spock.lang.AutoCleanup
 import spock.lang.Specification
@@ -38,7 +39,12 @@ class NewRelicHttpOverrideSpec extends Specification {
         context = ApplicationContext.build(
             'newrelic.token': 'nrtoken',
             'newrelic.url': 'http://example.com/nr'
-        ).build().start()
+        ).build()
+
+        // this will break the noop check but still the HTTP implementation should win
+        context.registerSingleton(Agent, Mock(Agent))
+
+        context.start()
         service = context.getBean(NewRelicInsightsService)
     }
 
