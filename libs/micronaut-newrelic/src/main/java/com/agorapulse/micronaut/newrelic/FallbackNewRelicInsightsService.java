@@ -19,7 +19,7 @@ package com.agorapulse.micronaut.newrelic;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micronaut.retry.annotation.Fallback;
+import io.micronaut.context.annotation.Secondary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +28,7 @@ import javax.inject.Singleton;
 import javax.validation.Valid;
 import java.util.Collection;
 
-@Fallback
+@Secondary
 @Singleton
 public class FallbackNewRelicInsightsService implements NewRelicInsightsService {
 

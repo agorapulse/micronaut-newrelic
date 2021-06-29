@@ -18,7 +18,6 @@
 package com.agorapulse.micronaut.newrelic;
 
 import io.micronaut.context.annotation.Primary;
-import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,13 +33,11 @@ import java.util.stream.Collectors;
  * This implementation is the one to use in Lambdas, since they aren't running the Java agent that would be able to
  * send the events asynchronously.
  */
-@Singleton
 @Primary
+@Singleton
 @Requires(
-    missingClasses = "com.newrelic.api.agent.NewRelic",
     beans = NewRelicInsightsClient.class
 )
-@Replaces(FallbackNewRelicInsightsService.class)
 public class DefaultNewRelicInsightsService implements NewRelicInsightsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NewRelicInsightsService.class);

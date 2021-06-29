@@ -1,0 +1,37 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright 2021 Agorapulse.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+dependencies {
+    implementation project(':micronaut-newrelic')
+
+    annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
+    annotationProcessor 'io.micronaut:micronaut-inject-java'
+    annotationProcessor 'io.micronaut:micronaut-validation'
+
+    implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    implementation 'io.micronaut:micronaut-inject'
+    implementation 'io.micronaut:micronaut-validation'
+    implementation 'io.micronaut:micronaut-runtime'
+    implementation 'com.newrelic.agent.java:newrelic-api:4.9.0'
+    implementation 'io.micronaut:micronaut-http-client'
+
+    runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.9.1'
+
+    testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    testImplementation 'io.micronaut:micronaut-inject-groovy'
+    testImplementation 'io.micronaut.test:micronaut-test-spock'
+}
