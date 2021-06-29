@@ -21,7 +21,6 @@ import com.agorapulse.gru.Gru
 import com.agorapulse.gru.http.Http
 import io.micronaut.context.ApplicationContext
 import io.micronaut.runtime.server.EmbeddedServer
-import org.junit.Rule
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 
@@ -29,8 +28,7 @@ class NewRelicFilterSpec extends Specification {
 
     @AutoCleanup ApplicationContext context
     @AutoCleanup EmbeddedServer server
-
-    @Rule Gru gru = Gru.equip(Http.steal(this))
+    @AutoCleanup Gru gru = Gru.create(Http.create(this))
 
     void setup() {
         context = ApplicationContext.build().build()
