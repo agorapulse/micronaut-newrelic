@@ -50,7 +50,7 @@ FallbackNewRelicInsightsService.java
 <a name="19"><font color="#808080">19</font>&nbsp;</a><font color="#ffffff"></font><br />
 <a name="20"><font color="#808080">20</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">com.fasterxml.jackson.core.JsonProcessingException;</font><br />
 <a name="21"><font color="#808080">21</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">com.fasterxml.jackson.databind.ObjectMapper;</font><br />
-<a name="22"><font color="#808080">22</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">io.micronaut.retry.annotation.Fallback;</font><br />
+<a name="22"><font color="#808080">22</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">io.micronaut.context.annotation.Secondary;</font><br />
 <a name="23"><font color="#808080">23</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">org.slf4j.Logger;</font><br />
 <a name="24"><font color="#808080">24</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">org.slf4j.LoggerFactory;</font><br />
 <a name="25"><font color="#808080">25</font>&nbsp;</a><font color="#ffffff"></font><br />
@@ -59,7 +59,7 @@ FallbackNewRelicInsightsService.java
 <a name="28"><font color="#808080">28</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">javax.validation.Valid;</font><br />
 <a name="29"><font color="#808080">29</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">java.util.Collection;</font><br />
 <a name="30"><font color="#808080">30</font>&nbsp;</a><font color="#ffffff"></font><br />
-<a name="31"><font color="#808080">31</font>&nbsp;</a><font color="#646464">@Fallback</font><br />
+<a name="31"><font color="#808080">31</font>&nbsp;</a><font color="#646464">@Secondary</font><br />
 <a name="32"><font color="#808080">32</font>&nbsp;</a><font color="#646464">@Singleton</font><br />
 <a name="33"><font color="#808080">33</font>&nbsp;</a><font color="#0000c0"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">FallbackNewRelicInsightsService&nbsp;</font><font color="#0000c0"><b>implements&nbsp;</b></font><font color="#000000">NewRelicInsightsService&nbsp;</font><font color="#000000">{</font><br />
 <a name="34"><font color="#808080">34</font>&nbsp;</a><font color="#ffffff"></font><br />
