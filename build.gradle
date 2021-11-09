@@ -141,6 +141,8 @@ projects {
 
             // location independent tests (useful for stable CI builds)
             tasks.withType(Test){
+                useJUnitPlatform()
+
                 systemProperty 'user.timezone', 'UTC'
                 systemProperty 'user.language', 'en'
             }
