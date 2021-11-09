@@ -155,7 +155,7 @@ projects {
             dependencies {
                 testCompileOnly 'io.micronaut:micronaut-inject-groovy'
 
-                testImplementation('org.spockframework:spock-core') {
+                testImplementation("org.spockframework:spock-core:$spockVersion") {
                     exclude group: 'org.codehaus.groovy', module: 'groovy-all'
                 }
                 testImplementation 'net.bytebuddy:byte-buddy:1.10.6'
