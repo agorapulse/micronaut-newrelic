@@ -16,7 +16,7 @@ implementation later. You can just depend on this library:
 [source,groovy,subs='verbatim,attributes']
 ----
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -33,7 +33,7 @@ and `micronaut-http-client`:
 [source,groovy,subs='verbatim,attributes']
 ----
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -63,7 +63,7 @@ and NewRelic Java library and the Java agent must be running alongside.
 [source,groovy,subs='verbatim,attributes']
 ----
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
