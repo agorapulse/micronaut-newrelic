@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2021 Agorapulse.
+ * Copyright 2022-2022 Agorapulse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ class FallbackSpec extends Specification {
     NewRelicInsightsService service
 
     void setup() {
-        context = ApplicationContext.build().start()
+        context = ApplicationContext.builder().start()
 
         service = context.getBean(NewRelicInsightsService)
     }

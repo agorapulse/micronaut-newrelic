@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2021 Agorapulse.
+ * Copyright 2022-2022 Agorapulse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ class NewRelicFilterSpec extends Specification {
     @AutoCleanup Gru gru = Gru.create(Http.create(this))
 
     void setup() {
-        context = ApplicationContext.build().build()
+        context = ApplicationContext.builder().build()
         context.start()
 
         server = context.getBean(EmbeddedServer)

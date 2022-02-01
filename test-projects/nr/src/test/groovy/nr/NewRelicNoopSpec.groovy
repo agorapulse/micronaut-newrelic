@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2021 Agorapulse.
+ * Copyright 2022-2022 Agorapulse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ class NewRelicNoopSpec extends Specification {
 
     void 'default new relic instance is enabled if there is valid agent'() {
         given:
-            ApplicationContext context = ApplicationContext.build().build()
+            ApplicationContext context = ApplicationContext.builder().build()
             context.registerSingleton(Agent, Mock(Agent))
             context.registerSingleton(Insights, Mock(Insights))
             context.start()

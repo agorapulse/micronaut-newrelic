@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2021 Agorapulse.
+ * Copyright 2022-2022 Agorapulse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ class NoNewRelicLibSpec extends Specification {
         })
         server.start()
 
-        context = ApplicationContext.build(
+        context = ApplicationContext.builder(
             'newrelic.url': server.httpUrl,
             'newrelic.token': NEW_RELIC_TOKEN
         ).start()
