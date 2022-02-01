@@ -73,7 +73,7 @@ class NoNewRelicLibSpec extends Specification {
         })
         server.start()
 
-        context = ApplicationContext.build(
+        context = ApplicationContext.builder(
             'newrelic.url': server.httpUrl,
             'newrelic.token': NEW_RELIC_TOKEN
         ).start()

@@ -36,7 +36,7 @@ class NewRelicHttpOverrideSpec extends Specification {
     NewRelicInsightsService service
 
     void setup() {
-        context = ApplicationContext.build(
+        context = ApplicationContext.builder(
             'newrelic.token': 'nrtoken',
             'newrelic.url': 'http://example.com/nr'
         ).build()
