@@ -44,9 +44,8 @@ import groovy.transform.Field
 @Field static final Map<String, Object> IMPORTS = [
         'javax.annotation.Nullable': 'io.micronaut.core.annotation.Nullable',
         'javax.annotation.Nonnull': 'io.micronaut.core.annotation.NonNull',
-        'javax.inject.Singleton': 'jakarta.inject.Singleton',
-        'javax.inject.Named': 'jakarta.inject.Named',
-        'javax.inject.Inject': 'jakarta.inject.Inject',
+        'Nonnull': 'NonNull',
+        'import javax.inject.': 'import jakarta.inject.',
         'io.micronaut.test.annotation.MicronautTest':  [
                 java: 'io.micronaut.test.extensions.junit5.annotation.MicronautTest',
                 groovy: 'io.micronaut.test.extensions.spock.annotation.MicronautTest',
