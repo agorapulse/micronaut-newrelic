@@ -21,14 +21,14 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Header;
 import io.micronaut.http.annotation.Post;
-import io.micronaut.http.client.RxHttpClient;
+import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
 
 import java.util.Map;
 
 @Client("${newrelic.url}")
 @Header(name="X-Insert-Key", value="${newrelic.token}")
-@Requires(property = "newrelic.url", classes = RxHttpClient.class)
+@Requires(property = "newrelic.url", classes = HttpClient.class)
 @Requires(property = "newrelic.token")
 public interface NewRelicInsightsClient {
 
