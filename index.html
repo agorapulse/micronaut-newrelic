@@ -92,7 +92,7 @@ $(addBlockSwitches);
 <h1>Micronaut Newrelic Library</h1>
 <div class="details">
 <span id="author" class="author">Vladimir Orany</span><br>
-<span id="revnumber">version 1.0.9</span>
+<span id="revnumber">version 1.1.1-micronaut-3.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -139,12 +139,12 @@ implementation later. You can just depend on this library:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
     // standard micronaut dependencies
-    implementation 'com.agorapulse:micronaut-newrelic:1.0.9'
+    implementation 'com.agorapulse:micronaut-newrelic:1.1.1-micronaut-3.0'
 }</code></pre>
 </div>
 </div>
@@ -158,16 +158,16 @@ and <code>micronaut-http-client</code>:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
     // standard micronaut dependencies
-    implementation 'com.agorapulse:micronaut-newrelic:1.0.9'
+    implementation 'com.agorapulse:micronaut-newrelic:1.1.1-micronaut-3.0'
     implementation 'io.micronaut:micronaut-http-client'
 
     // for reporting micronaut URL from the controllers
-    implementation 'com.agorapulse:micronaut-newrelic-http:1.0.9'
+    implementation 'com.agorapulse:micronaut-newrelic-http:1.1.1-micronaut-3.0'
 }</code></pre>
 </div>
 </div>
@@ -191,16 +191,16 @@ and NewRelic Java library and the Java agent must be running alongside.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="prettyprint highlight"><code data-lang="groovy">repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
     // standard micronaut dependencies
-    implementation 'com.agorapulse:micronaut-newrelic:1.0.9'
+    implementation 'com.agorapulse:micronaut-newrelic:1.1.1-micronaut-3.0'
     implementation 'com.newrelic.agent.java:newrelic-api:4.9.0'
 
     // for reporting micronaut URL from the controllers
-    implementation 'com.agorapulse:micronaut-newrelic-http:1.0.9'
+    implementation 'com.agorapulse:micronaut-newrelic-http:1.1.1-micronaut-3.0'
 }</code></pre>
 </div>
 </div>
@@ -260,8 +260,8 @@ which let you fine tune the <code>eventType</code> and <code>timestamp</code> pr
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.0.9<br>
-Last updated 2021-06-29 16:49:35 UTC
+Version 1.1.1-micronaut-3.0<br>
+Last updated 2022-02-01 09:37:39 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
