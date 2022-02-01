@@ -51,7 +51,7 @@ class NewRelicLibSpec extends Specification {
     Insights insights = Mock()
 
     void setup() {
-        context = ApplicationContext.build().build()
+        context = ApplicationContext.builder().build()
 
         context.registerSingleton(Agent, agent)
         context.registerSingleton(Insights, insights)

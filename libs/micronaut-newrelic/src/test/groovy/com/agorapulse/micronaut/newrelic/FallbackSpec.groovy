@@ -34,7 +34,7 @@ class FallbackSpec extends Specification {
     NewRelicInsightsService service
 
     void setup() {
-        context = ApplicationContext.build().start()
+        context = ApplicationContext.builder().start()
 
         service = context.getBean(NewRelicInsightsService)
     }

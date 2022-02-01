@@ -45,7 +45,7 @@ class NewRelicNoopSpec extends Specification {
 
     void 'default new relic instance is enabled if there is valid agent'() {
         given:
-            ApplicationContext context = ApplicationContext.build().build()
+            ApplicationContext context = ApplicationContext.builder().build()
             context.registerSingleton(Agent, Mock(Agent))
             context.registerSingleton(Insights, Mock(Insights))
             context.start()

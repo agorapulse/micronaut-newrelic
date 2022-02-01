@@ -31,7 +31,7 @@ class NewRelicFilterSpec extends Specification {
     @AutoCleanup Gru gru = Gru.create(Http.create(this))
 
     void setup() {
-        context = ApplicationContext.build().build()
+        context = ApplicationContext.builder().build()
         context.start()
 
         server = context.getBean(EmbeddedServer)
