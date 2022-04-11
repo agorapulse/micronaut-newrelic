@@ -23,7 +23,10 @@ import com.agorapulse.micronaut.newrelic.NewRelicInsightsClient
 import com.agorapulse.micronaut.newrelic.NewRelicInsightsService
 import com.newrelic.api.agent.Agent
 import com.newrelic.api.agent.Insights
+import com.newrelic.api.agent.NewRelic
 import io.micronaut.context.ApplicationContext
+import org.mockito.MockedStatic
+import org.mockito.Mockito
 import spock.lang.Specification
 
 @SuppressWarnings([
@@ -43,10 +46,14 @@ class NewRelicNoopSpec extends Specification {
             context.close()
     }
 
+    @SuppressWarnings('UnnecessaryGetter')
     void 'default new relic instance is enabled if there is valid agent'() {
         given:
+            Agent agent = Mock(Agent)
+            MockedStatic<NewRelic> newRelic = Mockito.mockStatic(NewRelic)
+            newRelic.when { NewRelic.getAgent() } thenReturn(agent)
             ApplicationContext context = ApplicationContext.builder().build()
-            context.registerSingleton(Agent, Mock(Agent))
+            context.registerSingleton(Agent, agent)
             context.registerSingleton(Insights, Mock(Insights))
             context.start()
             NewRelicInsightsService service = context.getBean(NewRelicInsightsService)
@@ -55,6 +62,7 @@ class NewRelicNoopSpec extends Specification {
             service instanceof AsyncNewRelicInsightsService
         cleanup:
             context.close()
+            newRelic.close()
     }
 
 }

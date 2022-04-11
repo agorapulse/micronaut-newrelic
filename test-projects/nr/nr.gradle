@@ -33,4 +33,5 @@ dependencies {
     testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
     testImplementation 'io.micronaut:micronaut-inject-groovy'
     testImplementation 'io.micronaut.test:micronaut-test-spock'
+    testImplementation 'org.mockito:mockito-inline:3.8.0'
 }
