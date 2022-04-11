@@ -20,20 +20,23 @@ package com.agorapulse.micronaut.newrelic;
 import io.micronaut.context.condition.Condition;
 import io.micronaut.context.condition.ConditionContext;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class NewRelicAgentPresentCondition implements Condition {
 
     @Override
     public boolean matches(ConditionContext context) {
         try {
-            Class<?> newRelicAgent = Class.forName("com.newrelic.api.agent.Agent");
-            Object agent = context.getBeanContext().getBean(newRelicAgent);
+            Class<?> newRelic = Class.forName("com.newrelic.api.agent.NewRelic");
+            Object agent = newRelic.getMethod("getAgent").invoke(null);
             boolean isNoop = agent.getClass().getSimpleName().toLowerCase().contains("noop");
             if (isNoop) {
                 context.fail("NewRelic agent is NoOpAgent");
                 return false;
             }
             return true;
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
             return false;
         }
     }

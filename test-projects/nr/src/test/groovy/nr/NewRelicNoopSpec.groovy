@@ -17,12 +17,9 @@
  */
 package nr
 
-import com.agorapulse.micronaut.newrelic.AsyncNewRelicInsightsService
 import com.agorapulse.micronaut.newrelic.FallbackNewRelicInsightsService
 import com.agorapulse.micronaut.newrelic.NewRelicInsightsClient
 import com.agorapulse.micronaut.newrelic.NewRelicInsightsService
-import com.newrelic.api.agent.Agent
-import com.newrelic.api.agent.Insights
 import io.micronaut.context.ApplicationContext
 import spock.lang.Specification
 
@@ -39,20 +36,6 @@ class NewRelicNoopSpec extends Specification {
         expect:
             !context.containsBean(NewRelicInsightsClient)
             service instanceof FallbackNewRelicInsightsService
-        cleanup:
-            context.close()
-    }
-
-    void 'default new relic instance is enabled if there is valid agent'() {
-        given:
-            ApplicationContext context = ApplicationContext.builder().build()
-            context.registerSingleton(Agent, Mock(Agent))
-            context.registerSingleton(Insights, Mock(Insights))
-            context.start()
-            NewRelicInsightsService service = context.getBean(NewRelicInsightsService)
-        expect:
-            !context.containsBean(NewRelicInsightsClient)
-            service instanceof AsyncNewRelicInsightsService
         cleanup:
             context.close()
     }

@@ -23,8 +23,11 @@ import com.agorapulse.micronaut.newrelic.NewRelicInsightsEvent
 import com.agorapulse.micronaut.newrelic.NewRelicInsightsService
 import com.newrelic.api.agent.Agent
 import com.newrelic.api.agent.Insights
+import com.newrelic.api.agent.NewRelic
 import io.micronaut.context.ApplicationContext
 import io.micronaut.core.annotation.Introspected
+import org.mockito.MockedStatic
+import org.mockito.Mockito
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -44,6 +47,7 @@ class NewRelicLibSpec extends Specification {
     public static final Long VALUE = 42L
 
     @AutoCleanup ApplicationContext context
+    @AutoCleanup MockedStatic<NewRelic> newRelic = Mockito.mockStatic(NewRelic)
 
     NewRelicInsightsService service
 
@@ -51,6 +55,7 @@ class NewRelicLibSpec extends Specification {
     Insights insights = Mock()
 
     void setup() {
+        newRelic.when { NewRelic.getAgent() } thenReturn(agent)
         context = ApplicationContext.builder().build()
 
         context.registerSingleton(Agent, agent)
