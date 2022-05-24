@@ -2,16 +2,16 @@
 [[_installation]]
 = Installation
 
-Micronaut NewRelic library helps to send the custom events to NewRelic.
+Micronaut NewRelic helps send custom events to NewRelic.
 
-There are two real implementations of the client - using HTTP client and using
-the NewRelic Java library - and the default implementation which logs the events' JSON
-into the `com.agorapulse.micronaut.newrelic.NewRelicInsightsService` log.
+There are two implementations of the client, one using Micronaut HTTP client with
+the NewRelic Java library, and the default implementation which logs the events' JSON
+to the `com.agorapulse.micronaut.newrelic.NewRelicInsightsService` log.
 
 == Default Implementation
 
-If you are developing a library then you can let the developers to pick the
-implementation later. You can just depend on this library:
+If you are developing a library, you can let the developers choose the
+implementation later. You only need to depend on this library:
 
 [source,groovy,subs='verbatim,attributes']
 ----
@@ -20,14 +20,14 @@ repositories {
 }
 
 dependencies {
-    // standard micronaut dependencies
+    // standard Micronaut dependencies
     implementation 'com.agorapulse:micronaut-newrelic:{project-version}'
 }
 ----
 
 == HTTP Client
 
-To enable HTTP client implementation you have to depend on this library
+To enable the HTTP client implementation, add a dependency on this library
 and `micronaut-http-client`:
 
 [source,groovy,subs='verbatim,attributes']
@@ -37,28 +37,28 @@ repositories {
 }
 
 dependencies {
-    // standard micronaut dependencies
+    // standard Micronaut dependencies
     implementation 'com.agorapulse:micronaut-newrelic:{project-version}'
     implementation 'io.micronaut:micronaut-http-client'
 
-    // for reporting micronaut URL from the controllers
+    // for reporting Micronaut URL from controllers
     implementation 'com.agorapulse:micronaut-newrelic-http:{project-version}'
 }
 ----
 
-You also need to specify the `newrelic.url` and `newrelic.token` properties:
+You must also specify values for the `newrelic.url` and `newrelic.token` properties:
 
 [source,yml,subs='verbatim,attributes']
 ----
 newrelic:
-    url: https://insights-collector.newrelic.com/v1/accounts/123456
-    token: abcdef1234567890
+  url: https://insights-collector.newrelic.com/v1/accounts/123456
+  token: abcdef1234567890
 ----
 
 == NewRelic Library
 
-To enable NewRelic client implementation you have to depend on this library
-and NewRelic Java library and the Java agent must be running alongside.
+To enable the NewRelic client implementation, add a dependency on this library
+and the NewRelic Java library. The Java agent must be running alongside.
 
 [source,groovy,subs='verbatim,attributes']
 ----
@@ -67,11 +67,11 @@ repositories {
 }
 
 dependencies {
-    // standard micronaut dependencies
+    // standard Micronaut dependencies
     implementation 'com.agorapulse:micronaut-newrelic:{project-version}'
     implementation 'com.newrelic.agent.java:newrelic-api:4.9.0'
 
-    // for reporting micronaut URL from the controllers
+    // for reporting Micronaut URL from controllers
     implementation 'com.agorapulse:micronaut-newrelic-http:{project-version}'
 }
 ----

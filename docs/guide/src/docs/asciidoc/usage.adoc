@@ -2,8 +2,7 @@
 [[_usage]]
 = Usage
 
-Micronaut NewRelic library provides `NewRelicInsightsService` bean with two simple methods `createEvent`
-and `createEvents`:
+Micronaut NewRelic library provides the `NewRelicInsightsService` bean with two methods, `createEvent` and `createEvents`:
 
 [source,java,subs='verbatim,attributes']
 ----
@@ -14,11 +13,11 @@ newRelicInsightsService.createEvents(Arrays.asList(
 ));
 ----
 
-The events can be of any class which is annotated with `@Introspected`.
-In that case the event type will be same as the name of the events' class
-e.g. `MyEvent`.
+Events can be instances of any class annotated with `@Introspected`.
+In that case the event type will be same as the name of the event class,
+e.g., `MyEvent`.
 
-WARNING: If you are using the library in non-micronaut environment (e.g. Grails) then ensure your `@Introspected` classes are processed either by `micronaut-inject-java` or `micronaut-inject-groovy` processors.
+WARNING: If you use the library in a non-Micronaut environment (e.g., Grails), ensure your `@Introspected` classes are processed by `micronaut-inject-java` or `micronaut-inject-groovy`.
 
-The events can optionally implement `NewRelicInsightsEvent` interface
-which let you fine tune the `eventType` and `timestamp` properties.
+The events can optionally implement the `NewRelicInsightsEvent` interface,
+which let you fine-tune the `eventType` and `timestamp` properties.

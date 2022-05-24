@@ -2,4 +2,4 @@
 [[_introduction]]
 = Introduction
 
-Micronaut NewRelic library helps to send the custom events to NewRelic.
+Micronaut NewRelic helps send custom events to https://newrelic.com/[NewRelic].
