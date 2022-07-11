@@ -51,47 +51,40 @@ DefaultNewRelicInsightsService.java
 <a name="20"><font color="#808080">20</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">io.micronaut.context.annotation.Primary;</font><br />
 <a name="21"><font color="#808080">21</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">io.micronaut.context.annotation.Replaces;</font><br />
 <a name="22"><font color="#808080">22</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">io.micronaut.context.annotation.Requires;</font><br />
-<a name="23"><font color="#808080">23</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">org.slf4j.Logger;</font><br />
-<a name="24"><font color="#808080">24</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">org.slf4j.LoggerFactory;</font><br />
-<a name="25"><font color="#808080">25</font>&nbsp;</a><font color="#ffffff"></font><br />
-<a name="26"><font color="#808080">26</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">io.micronaut.core.annotation.NonNull;</font><br />
-<a name="27"><font color="#808080">27</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">jakarta.inject.Singleton;</font><br />
-<a name="28"><font color="#808080">28</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">javax.validation.Valid;</font><br />
-<a name="29"><font color="#808080">29</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">java.util.Collection;</font><br />
-<a name="30"><font color="#808080">30</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">java.util.stream.Collectors;</font><br />
-<a name="31"><font color="#808080">31</font>&nbsp;</a><font color="#ffffff"></font><br />
-<a name="32"><font color="#808080">32</font>&nbsp;</a><font color="#008000">/**</font><br />
-<a name="33"><font color="#808080">33</font>&nbsp;</a><font color="#ffffff">&nbsp;</font><font color="#008000">*&nbsp;Default&nbsp;NewRelicInsightsService,&nbsp;sends&nbsp;events&nbsp;to&nbsp;the&nbsp;New&nbsp;Relic&nbsp;API&nbsp;in&nbsp;real&nbsp;time,&nbsp;with&nbsp;a&nbsp;blocking&nbsp;request.</font><br />
-<a name="34"><font color="#808080">34</font>&nbsp;</a><font color="#ffffff">&nbsp;</font><font color="#008000">*&nbsp;This&nbsp;implementation&nbsp;is&nbsp;the&nbsp;one&nbsp;to&nbsp;use&nbsp;in&nbsp;Lambdas,&nbsp;since&nbsp;they&nbsp;aren't&nbsp;running&nbsp;the&nbsp;Java&nbsp;agent&nbsp;that&nbsp;would&nbsp;be&nbsp;able&nbsp;to</font><br />
-<a name="35"><font color="#808080">35</font>&nbsp;</a><font color="#ffffff">&nbsp;</font><font color="#008000">*&nbsp;send&nbsp;the&nbsp;events&nbsp;asynchronously.</font><br />
-<a name="36"><font color="#808080">36</font>&nbsp;</a><font color="#ffffff">&nbsp;</font><font color="#008000">*/</font><br />
-<a name="37"><font color="#808080">37</font>&nbsp;</a><font color="#646464">@Primary</font><br />
-<a name="38"><font color="#808080">38</font>&nbsp;</a><font color="#646464">@Singleton</font><br />
-<a name="39"><font color="#808080">39</font>&nbsp;</a><font color="#646464">@Requires</font><font color="#000000">(</font><br />
-<a name="40"><font color="#808080">40</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">beans&nbsp;=&nbsp;NewRelicInsightsClient.</font><font color="#0000c0"><b>class</b></font><br />
-<a name="41"><font color="#808080">41</font>&nbsp;</a><font color="#000000">)</font><br />
-<a name="42"><font color="#808080">42</font>&nbsp;</a><font color="#646464">@Replaces</font><font color="#000000">(</font><font color="#000000">FallbackNewRelicInsightsService.</font><font color="#0000c0"><b>class</b></font><font color="#000000">)</font><br />
-<a name="43"><font color="#808080">43</font>&nbsp;</a><font color="#0000c0"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">DefaultNewRelicInsightsService&nbsp;</font><font color="#0000c0"><b>implements&nbsp;</b></font><font color="#000000">NewRelicInsightsService&nbsp;</font><font color="#000000">{</font><br />
-<a name="44"><font color="#808080">44</font>&nbsp;</a><font color="#ffffff"></font><br />
-<a name="45"><font color="#808080">45</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#0000c0"><b>private&nbsp;static&nbsp;final&nbsp;</b></font><font color="#000000">Logger&nbsp;LOGGER&nbsp;=&nbsp;LoggerFactory.getLogger</font><font color="#000000">(</font><font color="#000000">NewRelicInsightsService.</font><font color="#0000c0"><b>class</b></font><font color="#000000">)</font><font color="#000000">;</font><br />
-<a name="46"><font color="#808080">46</font>&nbsp;</a><font color="#ffffff"></font><br />
-<a name="47"><font color="#808080">47</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#0000c0"><b>private&nbsp;final&nbsp;</b></font><font color="#000000">NewRelicInsightsClient&nbsp;client;</font><br />
-<a name="48"><font color="#808080">48</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#0000c0"><b>private&nbsp;final&nbsp;</b></font><font color="#000000">EventPayloadExtractor&nbsp;extractor;</font><br />
-<a name="49"><font color="#808080">49</font>&nbsp;</a><font color="#ffffff"></font><br />
-<a name="50"><font color="#808080">50</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#0000c0"><b>public&nbsp;</b></font><font color="#000000">DefaultNewRelicInsightsService</font><font color="#000000">(</font><font color="#000000">NewRelicInsightsClient&nbsp;client,&nbsp;EventPayloadExtractor&nbsp;extractor</font><font color="#000000">)&nbsp;{</font><br />
-<a name="51"><font color="#808080">51</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#0000c0"><b>this</b></font><font color="#000000">.client&nbsp;=&nbsp;client;</font><br />
-<a name="52"><font color="#808080">52</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#0000c0"><b>this</b></font><font color="#000000">.extractor&nbsp;=&nbsp;extractor;</font><br />
-<a name="53"><font color="#808080">53</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
-<a name="54"><font color="#808080">54</font>&nbsp;</a><font color="#ffffff"></font><br />
-<a name="55"><font color="#808080">55</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
-<a name="56"><font color="#808080">56</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#0000c0"><b>public&nbsp;</b></font><font color="#000000">&lt;E&gt;&nbsp;</font><font color="#c00000"><b>void&nbsp;</b></font><font color="#000000">createEvents</font><font color="#000000">(</font><font color="#646464">@NonNull&nbsp;@Valid&nbsp;</font><font color="#000000">Collection&lt;E&gt;&nbsp;events</font><font color="#000000">)&nbsp;{</font><br />
-<a name="57"><font color="#808080">57</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#0000c0"><b>try&nbsp;</b></font><font color="#000000">{</font><br />
-<a name="58"><font color="#808080">58</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#0000c0"><b>this</b></font><font color="#000000">.client.createEvents</font><font color="#000000">(</font><font color="#000000">events.stream</font><font color="#000000">()</font><font color="#000000">.map</font><font color="#000000">(</font><font color="#000000">extractor::extractPayload</font><font color="#000000">)</font><font color="#000000">.collect</font><font color="#000000">(</font><font color="#000000">Collectors.toList</font><font color="#000000">()))</font><font color="#000000">;</font><br />
-<a name="59"><font color="#808080">59</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}&nbsp;</font><font color="#0000c0"><b>catch&nbsp;</b></font><font color="#000000">(</font><font color="#000000">Exception&nbsp;ex</font><font color="#000000">)&nbsp;{</font><br />
-<a name="60"><font color="#808080">60</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">LOGGER.error</font><font color="#000000">(</font><font color="#990000">&#34;Exception&nbsp;creating&nbsp;New&nbsp;Relic&nbsp;events&nbsp;&#34;&nbsp;</font><font color="#000000">+&nbsp;ex</font><font color="#000000">)</font><font color="#000000">;</font><br />
-<a name="61"><font color="#808080">61</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
-<a name="62"><font color="#808080">62</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
-<a name="63"><font color="#808080">63</font>&nbsp;</a><font color="#000000">}</font></code>
+<a name="23"><font color="#808080">23</font>&nbsp;</a><font color="#ffffff"></font><br />
+<a name="24"><font color="#808080">24</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">io.micronaut.core.annotation.NonNull;</font><br />
+<a name="25"><font color="#808080">25</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">jakarta.inject.Singleton;</font><br />
+<a name="26"><font color="#808080">26</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">javax.validation.Valid;</font><br />
+<a name="27"><font color="#808080">27</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">java.util.Collection;</font><br />
+<a name="28"><font color="#808080">28</font>&nbsp;</a><font color="#0000c0"><b>import&nbsp;</b></font><font color="#000000">java.util.stream.Collectors;</font><br />
+<a name="29"><font color="#808080">29</font>&nbsp;</a><font color="#ffffff"></font><br />
+<a name="30"><font color="#808080">30</font>&nbsp;</a><font color="#008000">/**</font><br />
+<a name="31"><font color="#808080">31</font>&nbsp;</a><font color="#ffffff">&nbsp;</font><font color="#008000">*&nbsp;Default&nbsp;NewRelicInsightsService,&nbsp;sends&nbsp;events&nbsp;to&nbsp;the&nbsp;New&nbsp;Relic&nbsp;API&nbsp;in&nbsp;real&nbsp;time,&nbsp;with&nbsp;a&nbsp;blocking&nbsp;request.</font><br />
+<a name="32"><font color="#808080">32</font>&nbsp;</a><font color="#ffffff">&nbsp;</font><font color="#008000">*&nbsp;This&nbsp;implementation&nbsp;is&nbsp;the&nbsp;one&nbsp;to&nbsp;use&nbsp;in&nbsp;Lambdas,&nbsp;since&nbsp;they&nbsp;aren't&nbsp;running&nbsp;the&nbsp;Java&nbsp;agent&nbsp;that&nbsp;would&nbsp;be&nbsp;able&nbsp;to</font><br />
+<a name="33"><font color="#808080">33</font>&nbsp;</a><font color="#ffffff">&nbsp;</font><font color="#008000">*&nbsp;send&nbsp;the&nbsp;events&nbsp;asynchronously.</font><br />
+<a name="34"><font color="#808080">34</font>&nbsp;</a><font color="#ffffff">&nbsp;</font><font color="#008000">*/</font><br />
+<a name="35"><font color="#808080">35</font>&nbsp;</a><font color="#646464">@Primary</font><br />
+<a name="36"><font color="#808080">36</font>&nbsp;</a><font color="#646464">@Singleton</font><br />
+<a name="37"><font color="#808080">37</font>&nbsp;</a><font color="#646464">@Requires</font><font color="#000000">(</font><br />
+<a name="38"><font color="#808080">38</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">beans&nbsp;=&nbsp;NewRelicInsightsClient.</font><font color="#0000c0"><b>class</b></font><br />
+<a name="39"><font color="#808080">39</font>&nbsp;</a><font color="#000000">)</font><br />
+<a name="40"><font color="#808080">40</font>&nbsp;</a><font color="#646464">@Replaces</font><font color="#000000">(</font><font color="#000000">FallbackNewRelicInsightsService.</font><font color="#0000c0"><b>class</b></font><font color="#000000">)</font><br />
+<a name="41"><font color="#808080">41</font>&nbsp;</a><font color="#0000c0"><b>public&nbsp;class&nbsp;</b></font><font color="#000000">DefaultNewRelicInsightsService&nbsp;</font><font color="#0000c0"><b>implements&nbsp;</b></font><font color="#000000">NewRelicInsightsService&nbsp;</font><font color="#000000">{</font><br />
+<a name="42"><font color="#808080">42</font>&nbsp;</a><font color="#ffffff"></font><br />
+<a name="43"><font color="#808080">43</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#0000c0"><b>private&nbsp;final&nbsp;</b></font><font color="#000000">NewRelicInsightsClient&nbsp;client;</font><br />
+<a name="44"><font color="#808080">44</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#0000c0"><b>private&nbsp;final&nbsp;</b></font><font color="#000000">EventPayloadExtractor&nbsp;extractor;</font><br />
+<a name="45"><font color="#808080">45</font>&nbsp;</a><font color="#ffffff"></font><br />
+<a name="46"><font color="#808080">46</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#0000c0"><b>public&nbsp;</b></font><font color="#000000">DefaultNewRelicInsightsService</font><font color="#000000">(</font><font color="#000000">NewRelicInsightsClient&nbsp;client,&nbsp;EventPayloadExtractor&nbsp;extractor</font><font color="#000000">)&nbsp;{</font><br />
+<a name="47"><font color="#808080">47</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#0000c0"><b>this</b></font><font color="#000000">.client&nbsp;=&nbsp;client;</font><br />
+<a name="48"><font color="#808080">48</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#0000c0"><b>this</b></font><font color="#000000">.extractor&nbsp;=&nbsp;extractor;</font><br />
+<a name="49"><font color="#808080">49</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<a name="50"><font color="#808080">50</font>&nbsp;</a><font color="#ffffff"></font><br />
+<a name="51"><font color="#808080">51</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#646464">@Override</font><br />
+<a name="52"><font color="#808080">52</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#0000c0"><b>public&nbsp;</b></font><font color="#000000">&lt;E&gt;&nbsp;</font><font color="#c00000"><b>void&nbsp;</b></font><font color="#000000">unsafeCreateEvents</font><font color="#000000">(</font><font color="#646464">@NonNull&nbsp;@Valid&nbsp;</font><font color="#000000">Collection&lt;E&gt;&nbsp;events</font><font color="#000000">)&nbsp;{</font><br />
+<a name="53"><font color="#808080">53</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#0000c0"><b>this</b></font><font color="#000000">.client.createEvents</font><font color="#000000">(</font><font color="#000000">events.stream</font><font color="#000000">()</font><font color="#000000">.map</font><font color="#000000">(</font><font color="#000000">extractor::extractPayload</font><font color="#000000">)</font><font color="#000000">.collect</font><font color="#000000">(</font><font color="#000000">Collectors.toList</font><font color="#000000">()))</font><font color="#000000">;</font><br />
+<a name="54"><font color="#808080">54</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">}</font><br />
+<a name="55"><font color="#808080">55</font>&nbsp;</a><font color="#ffffff"></font><br />
+<a name="56"><font color="#808080">56</font>&nbsp;</a><font color="#000000">}</font></code>
     
    </td>
   <!-- end source code -->
