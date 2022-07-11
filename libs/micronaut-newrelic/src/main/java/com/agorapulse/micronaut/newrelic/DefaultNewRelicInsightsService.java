@@ -20,8 +20,6 @@ package com.agorapulse.micronaut.newrelic;
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.inject.Singleton;
@@ -42,8 +40,6 @@ import java.util.stream.Collectors;
 @Replaces(FallbackNewRelicInsightsService.class)
 public class DefaultNewRelicInsightsService implements NewRelicInsightsService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NewRelicInsightsService.class);
-
     private final NewRelicInsightsClient client;
     private final EventPayloadExtractor extractor;
 
@@ -53,11 +49,8 @@ public class DefaultNewRelicInsightsService implements NewRelicInsightsService {
     }
 
     @Override
-    public <E> void createEvents(@Nonnull @Valid Collection<E> events) {
-        try {
-            this.client.createEvents(events.stream().map(extractor::extractPayload).collect(Collectors.toList()));
-        } catch (Exception ex) {
-            LOGGER.error("Exception creating New Relic events " + ex);
-        }
+    public <E> void unsafeCreateEvents(@Nonnull @Valid Collection<E> events) {
+        this.client.createEvents(events.stream().map(extractor::extractPayload).collect(Collectors.toList()));
     }
+
 }
