@@ -92,7 +92,7 @@ $(addBlockSwitches);
 <h1>Micronaut Newrelic Library</h1>
 <div class="details">
 <span id="author" class="author">Vladimir Orany</span><br>
-<span id="revnumber">version 1.1.3-micronaut-3.0</span>
+<span id="revnumber">version 1.2.0-micronaut-3.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -144,7 +144,7 @@ implementation later. You only need to depend on this library:</p>
 
 dependencies {
     // standard Micronaut dependencies
-    implementation 'com.agorapulse:micronaut-newrelic:1.1.3-micronaut-3.0'
+    implementation 'com.agorapulse:micronaut-newrelic:1.2.0-micronaut-3.0'
 }</code></pre>
 </div>
 </div>
@@ -163,11 +163,11 @@ and <code>micronaut-http-client</code>:</p>
 
 dependencies {
     // standard Micronaut dependencies
-    implementation 'com.agorapulse:micronaut-newrelic:1.1.3-micronaut-3.0'
+    implementation 'com.agorapulse:micronaut-newrelic:1.2.0-micronaut-3.0'
     implementation 'io.micronaut:micronaut-http-client'
 
     // for reporting Micronaut URL from controllers
-    implementation 'com.agorapulse:micronaut-newrelic-http:1.1.3-micronaut-3.0'
+    implementation 'com.agorapulse:micronaut-newrelic-http:1.2.0-micronaut-3.0'
 }</code></pre>
 </div>
 </div>
@@ -179,6 +179,25 @@ dependencies {
 <pre class="prettyprint highlight"><code data-lang="yml">newrelic:
   url: https://insights-collector.newrelic.com/v1/accounts/123456
   token: abcdef1234567890</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you need more control about the HTTP client settings then you can use configure the HTTP client with Micronaut HTTP Services <code>newrelic-insights</code> client.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="prettyprint highlight"><code data-lang="yml">newrelic:
+  token: abcdef1234567890
+micronaut:
+  http:
+    services:
+      newrelic-insights:
+        url: https://insights-collector.newrelic.com/v1/accounts/123456
+        event-loop-group: newrelic-insights
+  netty:
+    event-loops:
+      newrelic-insights:
+        executor: io</code></pre>
 </div>
 </div>
 </div>
@@ -196,11 +215,11 @@ and the NewRelic Java library. The Java agent must be running alongside.</p>
 
 dependencies {
     // standard Micronaut dependencies
-    implementation 'com.agorapulse:micronaut-newrelic:1.1.3-micronaut-3.0'
+    implementation 'com.agorapulse:micronaut-newrelic:1.2.0-micronaut-3.0'
     implementation 'com.newrelic.agent.java:newrelic-api:4.9.0'
 
     // for reporting Micronaut URL from controllers
-    implementation 'com.agorapulse:micronaut-newrelic-http:1.1.3-micronaut-3.0'
+    implementation 'com.agorapulse:micronaut-newrelic-http:1.2.0-micronaut-3.0'
 }</code></pre>
 </div>
 </div>
@@ -259,8 +278,8 @@ which let you fine-tune the <code>eventType</code> and <code>timestamp</code> pr
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.1.3-micronaut-3.0<br>
-Last updated 2022-07-11 16:42:06 UTC
+Version 1.2.0-micronaut-3.0<br>
+Last updated 2022-12-12 14:12:39 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
