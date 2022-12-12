@@ -17,10 +17,23 @@
  */
 package com.agorapulse.micronaut.newrelic;
 
+import io.micronaut.context.annotation.Requires;
+import io.micronaut.http.annotation.Body;
+import io.micronaut.http.annotation.Header;
+import io.micronaut.http.annotation.Post;
+import io.micronaut.http.client.HttpClient;
+import io.micronaut.http.client.annotation.Client;
+
 import java.util.Map;
 
-public interface NewRelicInsightsClient {
+@NewRelicInsights
+@Client("${newrelic.url}")
+@Requires(property = "newrelic.url", classes = HttpClient.class)
+public interface NewRelicInsightsUrlClient extends NewRelicInsightsClient {
 
-    void createEvents(Iterable<Map<String, Object>> events);
+    @Override
+    @Post("/events")
+    @Header(name="Content-type", value="application/json")
+    void createEvents(@Body Iterable<Map<String, Object>> events);
 
 }

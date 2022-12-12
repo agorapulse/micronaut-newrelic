@@ -55,6 +55,25 @@ newrelic:
   token: abcdef1234567890
 ----
 
+If you need more control about the HTTP client settings then you can use configure the HTTP client with Micronaut HTTP Services `newrelic-insights` client.
+
+[source,yml,subs='verbatim,attributes']
+----
+newrelic:
+  token: abcdef1234567890
+micronaut:
+  http:
+    services:
+      newrelic-insights:
+        url: https://insights-collector.newrelic.com/v1/accounts/123456
+        event-loop-group: newrelic-insights
+  netty:
+    event-loops:
+      newrelic-insights:
+        executor: io
+----
+
+
 == NewRelic Library
 
 To enable the NewRelic client implementation, add a dependency on this library

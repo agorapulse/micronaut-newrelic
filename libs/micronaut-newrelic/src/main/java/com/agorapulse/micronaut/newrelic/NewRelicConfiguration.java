@@ -17,10 +17,28 @@
  */
 package com.agorapulse.micronaut.newrelic;
 
-import java.util.Map;
+import io.micronaut.context.annotation.ConfigurationProperties;
 
-public interface NewRelicInsightsClient {
+@ConfigurationProperties("newrelic")
+public class NewRelicConfiguration {
 
-    void createEvents(Iterable<Map<String, Object>> events);
+    private String url;
+    private String token;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
 }

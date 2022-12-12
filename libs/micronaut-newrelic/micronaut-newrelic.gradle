@@ -24,6 +24,7 @@ dependencies {
     annotationProcessor 'io.micronaut:micronaut-validation'
 
     implementation 'io.micronaut:micronaut-validation'
+    implementation "io.projectreactor:reactor-core:$projectReactorVersion"
 
     // We don't have a runtime dependency on NR to be able to use the plain HTTP synchronous client on Lambdas.
     compileOnly 'io.micronaut:micronaut-http-client'
