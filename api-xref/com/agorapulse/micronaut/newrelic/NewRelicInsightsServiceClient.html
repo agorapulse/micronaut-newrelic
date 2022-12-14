@@ -36,7 +36,7 @@
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  @Client(<span class="jxr_string">"newrelic-insights"</span>)
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  @Requires(property = <span class="jxr_string">"micronaut.http.services.newrelic-insights.url"</span>, classes = HttpClient.<strong class="jxr_keyword">class</strong>)
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  @Requires(property = <span class="jxr_string">"micronaut.http.services.newrelic-insights.url"</span>, classes = HttpClient.<strong class="jxr_keyword">class</strong>, beans = NewRelicInsightsClientFilter.<strong class="jxr_keyword">class</strong>)
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  @Replaces(NewRelicInsightsUrlClient.<strong class="jxr_keyword">class</strong>)
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> <a name="NewRelicInsightsServiceClient" href="../../../../com/agorapulse/micronaut/newrelic/NewRelicInsightsServiceClient.html#NewRelicInsightsServiceClient">NewRelicInsightsServiceClient</a> <strong class="jxr_keyword">extends</strong> <a name="NewRelicInsightsClient" href="../../../../com/agorapulse/micronaut/newrelic/NewRelicInsightsClient.html#NewRelicInsightsClient">NewRelicInsightsClient</a>{
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  
