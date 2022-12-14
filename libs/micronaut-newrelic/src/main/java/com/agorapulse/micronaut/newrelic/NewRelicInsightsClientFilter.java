@@ -17,6 +17,7 @@
  */
 package com.agorapulse.micronaut.newrelic;
 
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MutableHttpRequest;
@@ -31,6 +32,7 @@ import javax.inject.Singleton;
 
 @Singleton
 @NewRelicInsights
+@Requires(property = "newrelic.token")
 public class NewRelicInsightsClientFilter implements HttpClientFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NewRelicInsightsClientFilter.class);
