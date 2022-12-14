@@ -28,7 +28,7 @@ import java.util.Map;
 
 @NewRelicInsights
 @Client("${newrelic.url}")
-@Requires(property = "newrelic.url", classes = HttpClient.class)
+@Requires(property = "newrelic.url", classes = HttpClient.class, beans = NewRelicInsightsClientFilter.class)
 public interface NewRelicInsightsUrlClient extends NewRelicInsightsClient {
 
     @Override
