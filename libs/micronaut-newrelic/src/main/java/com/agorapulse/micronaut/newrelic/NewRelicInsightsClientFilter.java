@@ -24,8 +24,6 @@ import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.filter.ClientFilterChain;
 import io.micronaut.http.filter.HttpClientFilter;
 import org.reactivestreams.Publisher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import javax.annotation.Nullable;
 import javax.inject.Singleton;
@@ -34,8 +32,6 @@ import javax.inject.Singleton;
 @NewRelicInsights
 @Requires(property = "newrelic.token")
 public class NewRelicInsightsClientFilter implements HttpClientFilter {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(NewRelicInsightsClientFilter.class);
 
     private final NewRelicConfiguration configuration;
 
