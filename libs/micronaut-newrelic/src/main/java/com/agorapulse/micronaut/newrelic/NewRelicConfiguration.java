@@ -19,25 +19,27 @@ package com.agorapulse.micronaut.newrelic;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 
+import javax.annotation.Nullable;
+
 @ConfigurationProperties("newrelic")
 public class NewRelicConfiguration {
 
-    private String url;
-    private String token;
+    @Nullable private String url;
+    @Nullable private String token;
 
-    public String getUrl() {
+    @Nullable public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(@Nullable String url) {
         this.url = url;
     }
 
-    public String getToken() {
+    @Nullable public String getToken() {
         return token;
     }
 
-    public void setToken(String token) {
+    public void setToken(@Nullable String token) {
         this.token = token;
     }
 

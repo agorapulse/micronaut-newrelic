@@ -35,8 +35,6 @@ import javax.inject.Singleton;
 @Requires(property = "newrelic.token")
 public class NewRelicInsightsClientFilter implements HttpClientFilter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NewRelicInsightsClientFilter.class);
-
     private final NewRelicConfiguration configuration;
 
     public NewRelicInsightsClientFilter(@Nullable NewRelicConfiguration configuration) {
