@@ -27,6 +27,7 @@ import io.micronaut.http.client.annotation.Client;
 
 import java.util.Map;
 
+@NewRelicInsights
 @Client("newrelic-insights")
 @Requires(property = "micronaut.http.services.newrelic-insights.url", classes = HttpClient.class, beans = NewRelicInsightsClientFilter.class)
 @Replaces(NewRelicInsightsUrlClient.class)
