@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2022-2022 Agorapulse.
+ * Copyright 2022-2023 Agorapulse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import io.micronaut.http.client.annotation.Client;
 
 import java.util.Map;
 
+@NewRelicInsights
 @Client("newrelic-insights")
 @Requires(property = "micronaut.http.services.newrelic-insights.url", classes = HttpClient.class, beans = NewRelicInsightsClientFilter.class)
 @Replaces(NewRelicInsightsUrlClient.class)
