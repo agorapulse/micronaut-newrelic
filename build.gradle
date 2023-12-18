@@ -94,6 +94,14 @@ config {
     }
 
     docs {
+        javadoc {
+            autoLinks {
+                enabled = false
+            }
+            aggregate {
+                enabled = false
+            }
+        }
         groovydoc {
             enabled = false
             aggregate {
@@ -126,10 +134,22 @@ allprojects {
     }
 }
 
-projects {
+gradleProjects {
     subprojects {
         dirs(['libs', 'test-projects']) {
-            apply plugin: 'micronaut-compatibility'
+            java {
+                toolchain {
+                    languageVersion = JavaLanguageVersion.of(17)
+                }
+            }
+
+            micronaut {
+                importMicronautPlatform = true
+                testRuntime 'spock'
+                processing {
+                    incremental false
+                }
+            }
 
             // useful for Micronaut
             tasks.withType(GroovyCompile) {
@@ -159,16 +179,8 @@ projects {
 
             dependencies {
                 testCompileOnly 'io.micronaut:micronaut-inject-groovy'
-
-                testImplementation("org.spockframework:spock-core:$spockVersion") {
-                    exclude group: 'org.codehaus.groovy', module: 'groovy-all'
-                }
-                testImplementation 'net.bytebuddy:byte-buddy:1.10.6'
-                testImplementation 'org.objenesis:objenesis:3.1'
-
-                testImplementation 'com.stehno.ersatz:ersatz:1.9.0'
-                testImplementation 'io.undertow:undertow-core:2.0.13.Final'
-                testImplementation 'space.jasan:groovy-closure-support:0.6.1'
+                testImplementation 'io.github.cjstehno.ersatz:ersatz:4.0.0'
+                testImplementation 'io.github.cjstehno.ersatz:ersatz-groovy:4.0.0'
             }
         }
 

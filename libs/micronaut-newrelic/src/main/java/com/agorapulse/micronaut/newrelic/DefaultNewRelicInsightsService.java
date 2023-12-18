@@ -23,7 +23,7 @@ import io.micronaut.context.annotation.Requires;
 
 import io.micronaut.core.annotation.NonNull;
 import jakarta.inject.Singleton;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Collection;
 import java.util.stream.Collectors;
 

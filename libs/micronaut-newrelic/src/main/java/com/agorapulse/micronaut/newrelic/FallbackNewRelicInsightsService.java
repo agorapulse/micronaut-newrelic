@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import io.micronaut.core.annotation.NonNull;
 import jakarta.inject.Singleton;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.Collection;
 
 @Secondary

@@ -21,8 +21,8 @@ import io.micronaut.validation.Validated;
 import org.slf4j.LoggerFactory;
 
 import io.micronaut.core.annotation.NonNull;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Valid;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import java.util.Collection;
 import java.util.Collections;
 

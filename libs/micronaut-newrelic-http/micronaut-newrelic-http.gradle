@@ -16,14 +16,9 @@
  * limitations under the License.
  */
 dependencies {
-    annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
-    api platform("io.micronaut:micronaut-bom:$micronautVersion")
-    implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+    annotationProcessor 'io.micronaut.validation:micronaut-validation-processor'
 
-    annotationProcessor 'io.micronaut:micronaut-inject-java'
-    annotationProcessor 'io.micronaut:micronaut-validation'
-
-    implementation 'io.micronaut:micronaut-validation'
+    implementation 'io.micronaut.validation:micronaut-validation'
 
     api project(':micronaut-newrelic')
     api 'io.micronaut:micronaut-http'
@@ -31,5 +26,5 @@ dependencies {
     api 'io.reactivex.rxjava2:rxjava'
 
     testImplementation 'io.micronaut:micronaut-http-server-netty'
-    testImplementation "com.agorapulse:gru-micronaut:0.9.2"
+    testImplementation 'com.agorapulse:gru-micronaut:2.0.4'
 }
