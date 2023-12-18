@@ -34,7 +34,7 @@ jobs:
           SIGNING_SECRET_KEY_PATH: ${{ steps.write_file.outputs.filePath }}
         uses: gradle/gradle-command-action@v2
         with:
-          arguments: migrateImports gitPublishPush -x groovydoc publishToSonatype closeAndReleaseSonatypeStagingRepository -Pversion=${{ steps.version.outputs.tag }}- -Prelease=true -Dorg.ajoberstar.grgit.auth.username=${{ secrets.AGORAPULSE_BOT_PERSONAL_TOKEN }}
+          arguments: gitPublishPush publishToSonatype closeAndReleaseSonatypeStagingRepository -Pversion=${{ steps.version.outputs.tag }}- -Prelease=true -Dorg.ajoberstar.grgit.auth.username=${{ secrets.AGORAPULSE_BOT_PERSONAL_TOKEN }}
   ping:
     name: Notify Upstream Repositories
     runs-on: ubuntu-latest
