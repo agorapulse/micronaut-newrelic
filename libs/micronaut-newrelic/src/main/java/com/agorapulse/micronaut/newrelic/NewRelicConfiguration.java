@@ -19,7 +19,7 @@ package com.agorapulse.micronaut.newrelic;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 
-import javax.annotation.Nullable;
+import io.micronaut.core.annotation.Nullable;
 
 @ConfigurationProperties("newrelic")
 public class NewRelicConfiguration {

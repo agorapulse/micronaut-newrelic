@@ -25,8 +25,8 @@ import io.micronaut.http.filter.ClientFilterChain;
 import io.micronaut.http.filter.HttpClientFilter;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
-import javax.annotation.Nullable;
-import javax.inject.Singleton;
+import io.micronaut.core.annotation.Nullable;
+import jakarta.inject.Singleton;
 
 @Singleton
 @NewRelicInsights
