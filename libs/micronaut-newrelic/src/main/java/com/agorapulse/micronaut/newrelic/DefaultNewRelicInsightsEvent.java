@@ -17,8 +17,8 @@
  */
 package com.agorapulse.micronaut.newrelic;
 
-import javax.annotation.Nullable;
-import javax.validation.constraints.NotBlank;
+import io.micronaut.core.annotation.Nullable;
+import jakarta.validation.constraints.NotBlank;
 
 class DefaultNewRelicInsightsEvent implements NewRelicInsightsEvent {
 

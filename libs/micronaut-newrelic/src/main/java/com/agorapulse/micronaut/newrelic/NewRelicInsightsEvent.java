@@ -18,16 +18,14 @@
 package com.agorapulse.micronaut.newrelic;
 
 import io.micronaut.core.annotation.Introspected;
-import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Optinal interface describing a New Relic NRQL Event. Classes extending it will automatically transformed into JSON when sent
  * to the New Relic API by the Micronaut HTTP client.
  */
-@Validated
 @Introspected
 public interface NewRelicInsightsEvent {
 

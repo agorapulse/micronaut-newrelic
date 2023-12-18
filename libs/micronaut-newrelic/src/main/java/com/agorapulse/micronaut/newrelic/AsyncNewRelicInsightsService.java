@@ -22,9 +22,9 @@ import com.newrelic.api.agent.NewRelic;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
 
-import javax.annotation.Nonnull;
-import javax.inject.Singleton;
-import javax.validation.Valid;
+import io.micronaut.core.annotation.NonNull;
+import jakarta.inject.Singleton;
+import jakarta.validation.Valid;
 import java.util.Collection;
 import java.util.Map;
 
@@ -45,14 +45,14 @@ public class AsyncNewRelicInsightsService implements NewRelicInsightsService {
     }
 
     @Override
-    public <E> void unsafeCreateEvent(@Nonnull @Valid E event) {
+    public <E> void unsafeCreateEvent(@NonNull @Valid E event) {
         Map<String, Object> map = extractor.extractPayload(event);
         Object eventType = map.remove("eventType");
         insights.recordCustomEvent(eventType.toString(), map);
     }
 
     @Override
-    public <E> void unsafeCreateEvents(@Nonnull @Valid Collection<E> events) {
+    public <E> void unsafeCreateEvents(@NonNull @Valid Collection<E> events) {
         for (E event : events) {
             unsafeCreateEvent(event);
         }

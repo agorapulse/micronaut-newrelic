@@ -21,9 +21,9 @@ import io.micronaut.context.annotation.Primary;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
 
-import javax.annotation.Nonnull;
-import javax.inject.Singleton;
-import javax.validation.Valid;
+import io.micronaut.core.annotation.NonNull;
+import jakarta.inject.Singleton;
+import jakarta.validation.Valid;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -49,7 +49,7 @@ public class DefaultNewRelicInsightsService implements NewRelicInsightsService {
     }
 
     @Override
-    public <E> void unsafeCreateEvents(@Nonnull @Valid Collection<E> events) {
+    public <E> void unsafeCreateEvents(@NonNull @Valid Collection<E> events) {
         this.client.createEvents(events.stream().map(extractor::extractPayload).collect(Collectors.toList()));
     }
 

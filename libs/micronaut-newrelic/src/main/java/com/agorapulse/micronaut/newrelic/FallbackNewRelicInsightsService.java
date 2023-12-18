@@ -22,9 +22,9 @@ import io.micronaut.context.annotation.Secondary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
-import javax.inject.Singleton;
-import javax.validation.Valid;
+import io.micronaut.core.annotation.NonNull;
+import jakarta.inject.Singleton;
+import jakarta.validation.Valid;
 import java.util.Collection;
 
 @Secondary
@@ -40,7 +40,7 @@ public class FallbackNewRelicInsightsService implements NewRelicInsightsService 
     }
 
     @Override
-    public <E> void unsafeCreateEvents(@Nonnull @Valid Collection<E> events) throws Exception {
+    public <E> void unsafeCreateEvents(@NonNull @Valid Collection<E> events) throws Exception {
         LOGGER.info("Following events not sent to NewRelic:\n" + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(events));
     }
 

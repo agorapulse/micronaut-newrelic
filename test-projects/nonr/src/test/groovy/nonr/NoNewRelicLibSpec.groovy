@@ -21,8 +21,9 @@ import com.agorapulse.micronaut.newrelic.DefaultNewRelicInsightsService
 import com.agorapulse.micronaut.newrelic.NewRelicInsightsClient
 import com.agorapulse.micronaut.newrelic.NewRelicInsightsEvent
 import com.agorapulse.micronaut.newrelic.NewRelicInsightsService
-import com.stehno.ersatz.ContentType
-import com.stehno.ersatz.ErsatzServer
+import io.github.cjstehno.ersatz.ErsatzServer
+import io.github.cjstehno.ersatz.GroovyErsatzServer
+import io.github.cjstehno.ersatz.cfg.ContentType
 import io.micronaut.context.ApplicationContext
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -32,7 +33,7 @@ import spock.lang.AutoCleanup
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import javax.validation.ConstraintViolationException
+import jakarta.validation.ConstraintViolationException
 
 @SuppressWarnings('Instanceof')
 class NoNewRelicLibSpec extends Specification {
@@ -60,9 +61,9 @@ class NoNewRelicLibSpec extends Specification {
     }
 
     void setup() {
-        server = new ErsatzServer({
+        server = new GroovyErsatzServer({
             expectations {
-                post '/events', {
+                POST '/events', {
                     header 'X-Insert-Key', NEW_RELIC_TOKEN
                     body(Matchers.contains(bodyMatcher), ContentType.APPLICATION_JSON)
                     responds().code(200)
