@@ -24,9 +24,11 @@ import io.micronaut.http.annotation.Header;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
+import io.micronaut.retry.annotation.Retryable;
 
 import java.util.Map;
 
+@Retryable
 @NewRelicInsights
 @Client("newrelic-insights")
 @Requires(property = "micronaut.http.services.newrelic-insights.url", classes = HttpClient.class, beans = NewRelicInsightsClientFilter.class)
