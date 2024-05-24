@@ -31,7 +31,6 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Default NewRelicInsightsService, sends events to the New Relic API in real time, with a blocking request.
@@ -45,6 +44,7 @@ import java.util.stream.Collectors;
 public class DefaultNewRelicInsightsService implements NewRelicInsightsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultNewRelicInsightsService.class);
+    private static final String DEFAULT_ERROR_MESSAGE = "Exception creating New Relic events ";
 
     private final NewRelicInsightsClient criticalClient;
     private final NewRelicInsightsClient client;
@@ -70,7 +70,18 @@ public class DefaultNewRelicInsightsService implements NewRelicInsightsService {
             // keep the validation exceptions
             throw cve;
         } catch (Exception ex) {
-            LoggerFactory.getLogger(getClass()).error("Exception creating New Relic events " + ex);
+            boolean hasCriticalEvents = events.stream()
+                .map(extractor::extractPayload)
+                .anyMatch(EventPayloadExtractor::isCritical);
+
+            if (hasCriticalEvents) {
+                log(ex);
+            } else {
+                // only log events that won't trigger retry with critical client
+                if (!NewRelicRetryPredicate.INSTANCE.test(ex)) {
+                    log(ex);
+                }
+            }
         }
     }
 
@@ -92,6 +103,26 @@ public class DefaultNewRelicInsightsService implements NewRelicInsightsService {
 
         if (!nonCriticalEvents.isEmpty()) {
             this.client.createEvents(nonCriticalEvents);
+        }
+    }
+
+    private void log(Exception ex) {
+        switch (configuration.getLogLevel()) {
+            case TRACE:
+                LOGGER.trace(DEFAULT_ERROR_MESSAGE, ex);
+                break;
+            case DEBUG:
+                LOGGER.debug(DEFAULT_ERROR_MESSAGE, ex);
+                break;
+            case INFO:
+                LOGGER.info(DEFAULT_ERROR_MESSAGE, ex);
+                break;
+            case ERROR:
+                LOGGER.error(DEFAULT_ERROR_MESSAGE, ex);
+                break;
+            case WARN:
+            default:
+                LOGGER.warn(DEFAULT_ERROR_MESSAGE, ex);
         }
     }
 

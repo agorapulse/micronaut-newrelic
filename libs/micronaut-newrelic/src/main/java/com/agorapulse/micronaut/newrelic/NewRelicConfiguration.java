@@ -20,6 +20,7 @@ package com.agorapulse.micronaut.newrelic;
 import io.micronaut.context.annotation.ConfigurationProperties;
 
 import io.micronaut.core.annotation.Nullable;
+import org.slf4j.event.Level;
 
 @ConfigurationProperties("newrelic")
 public class NewRelicConfiguration {
@@ -27,7 +28,7 @@ public class NewRelicConfiguration {
     @Nullable private String url;
     @Nullable private String token;
 
-    private boolean logErrors = true;
+    private Level logLevel = Level.WARN;
 
     @Nullable public String getUrl() {
         return url;
@@ -45,12 +46,11 @@ public class NewRelicConfiguration {
         this.token = token;
     }
 
-    public boolean isLogErrors() {
-        return logErrors;
+    public Level getLogLevel() {
+        return logLevel;
     }
 
-    public void setLogErrors(boolean logErrors) {
-        this.logErrors = logErrors;
+    public void setLogLevel(Level logLevel) {
+        this.logLevel = logLevel;
     }
-
 }

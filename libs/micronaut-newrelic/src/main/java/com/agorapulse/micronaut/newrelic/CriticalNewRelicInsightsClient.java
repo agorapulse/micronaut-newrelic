@@ -1,41 +1,29 @@
 package com.agorapulse.micronaut.newrelic;
 
-import io.micronaut.core.annotation.Nullable;
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.retry.annotation.Retryable;
-import jakarta.inject.Named;
 import jakarta.inject.Singleton;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
+/**
+ * This client is used to send critical events to New Relic Insights.
+ *
+ * This class does not implement the {@link NewRelicInsightsClient} interface to avoid cyclic dependencies.
+ */
 @Singleton
-@Named("critical")
-public class CriticalNewRelicInsightsClient implements NewRelicInsightsClient {
+@Requires(bean = NewRelicInsightsClient.class)
+public class CriticalNewRelicInsightsClient {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CriticalNewRelicInsightsClient.class);
+    private final NewRelicInsightsClient client;
 
-    private final NewRelicInsightsServiceClient serviceClient;
-    private final NewRelicInsightsUrlClient urlClient;
-
-    public CriticalNewRelicInsightsClient(
-        @Nullable NewRelicInsightsServiceClient serviceClient,
-        @Nullable NewRelicInsightsUrlClient urlClient
-    ) {
-        this.serviceClient = serviceClient;
-        this.urlClient = urlClient;
+    public CriticalNewRelicInsightsClient(NewRelicInsightsClient client) {
+        this.client = client;
     }
 
-    @Override
-    @Retryable(attempts = "${newrelic.retry.counts:3}")
+    @Retryable(attempts = "${newrelic.retry.count:3}", predicate = NewRelicRetryPredicate.class)
     public void createEvents(Iterable<Map<String, Object>> events) {
-        if (serviceClient != null) {
-            serviceClient.createEvents(events);
-        } else if (urlClient != null) {
-            urlClient.createEvents(events);
-        } else {
-            LOGGER.error("No New Relic client found to send events: {}", events);
-        }
+        client.createEvents(events);
     }
 
 }
