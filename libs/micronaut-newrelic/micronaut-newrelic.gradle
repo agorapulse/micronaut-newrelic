@@ -21,6 +21,7 @@ dependencies {
     implementation 'io.micronaut.validation:micronaut-validation'
     implementation "io.projectreactor:reactor-core:$projectReactorVersion"
     implementation 'io.micronaut:micronaut-jackson-databind'
+    implementation 'io.micronaut:micronaut-retry'
 
     // We don't have a runtime dependency on NR to be able to use the plain HTTP synchronous client on Lambdas.
     compileOnly 'io.micronaut:micronaut-http-client'

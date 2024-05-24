@@ -27,6 +27,8 @@ public class NewRelicConfiguration {
     @Nullable private String url;
     @Nullable private String token;
 
+    private boolean logErrors = true;
+
     @Nullable public String getUrl() {
         return url;
     }
@@ -41,6 +43,14 @@ public class NewRelicConfiguration {
 
     public void setToken(@Nullable String token) {
         this.token = token;
+    }
+
+    public boolean isLogErrors() {
+        return logErrors;
+    }
+
+    public void setLogErrors(boolean logErrors) {
+        this.logErrors = logErrors;
     }
 
 }

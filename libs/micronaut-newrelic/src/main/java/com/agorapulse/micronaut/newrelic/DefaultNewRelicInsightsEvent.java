@@ -56,4 +56,9 @@ class DefaultNewRelicInsightsEvent implements NewRelicInsightsEvent {
         return value;
     }
 
+    @Override
+    public boolean isCritical() {
+        return false;
+    }
+
 }
