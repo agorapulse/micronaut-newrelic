@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2022-2023 Agorapulse.
+ * Copyright 2022-2024 Agorapulse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,8 @@
 package com.agorapulse.micronaut.newrelic;
 
 import io.micronaut.validation.Validated;
-import org.slf4j.LoggerFactory;
 
 import io.micronaut.core.annotation.NonNull;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import java.util.Collection;
 import java.util.Collections;

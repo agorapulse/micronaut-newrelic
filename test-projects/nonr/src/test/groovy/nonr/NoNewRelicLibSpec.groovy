@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2022-2023 Agorapulse.
+ * Copyright 2022-2024 Agorapulse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -120,6 +120,13 @@ class NoNewRelicLibSpec extends Specification {
             thrown(ConstraintViolationException)
         where:
             value << [null, '']
+    }
+
+    void 'send critical event'() {
+        when:
+            service.createEvent(new CriticalEvent('test'))
+        then:
+            noExceptionThrown()
     }
 
 }

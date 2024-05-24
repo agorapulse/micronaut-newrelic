@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2022-2023 Agorapulse.
+ * Copyright 2022-2024 Agorapulse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,13 +46,13 @@ public class DefaultNewRelicInsightsService implements NewRelicInsightsService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultNewRelicInsightsService.class);
     private static final String DEFAULT_ERROR_MESSAGE = "Exception creating New Relic events ";
 
-    private final NewRelicInsightsClient criticalClient;
+    private final CriticalNewRelicInsightsClient criticalClient;
     private final NewRelicInsightsClient client;
     private final EventPayloadExtractor extractor;
     private final NewRelicConfiguration configuration;
 
     public DefaultNewRelicInsightsService(
-        NewRelicInsightsClient criticalClient,
+        CriticalNewRelicInsightsClient criticalClient,
         NewRelicInsightsClient client,
         EventPayloadExtractor extractor,
         NewRelicConfiguration configuration

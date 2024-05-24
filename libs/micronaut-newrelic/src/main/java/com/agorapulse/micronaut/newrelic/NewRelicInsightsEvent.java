@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2022-2023 Agorapulse.
+ * Copyright 2022-2024 Agorapulse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ public interface NewRelicInsightsEvent {
     }
 
     default boolean isCritical() {
-        return BeanIntrospector.SHARED.findIntrospection(getClass()).map((i -> i.findAnnotation(Critical.class).isPresent())).orElse(false);
+        return BeanIntrospector.SHARED.findIntrospection(getClass()).map(i -> i.findAnnotation(Critical.class).isPresent()).orElse(false);
     }
 
 }
