@@ -45,6 +45,11 @@ public class AsyncNewRelicInsightsService implements NewRelicInsightsService {
     }
 
     @Override
+    public <E> void createEvents(Collection<E> events) {
+        unsafeCreateEvents(events);
+    }
+
+    @Override
     public <E> void unsafeCreateEvent(@NonNull @Valid E event) {
         Map<String, Object> map = extractor.extractPayload(event);
         Object eventType = map.remove("eventType");

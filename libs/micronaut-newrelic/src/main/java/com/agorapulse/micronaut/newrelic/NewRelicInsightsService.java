@@ -18,10 +18,8 @@
 package com.agorapulse.micronaut.newrelic;
 
 import io.micronaut.validation.Validated;
-import org.slf4j.LoggerFactory;
 
 import io.micronaut.core.annotation.NonNull;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,16 +31,7 @@ public interface NewRelicInsightsService {
         createEvents(Collections.singleton(event));
     }
 
-    default <E> void createEvents(@Valid @NonNull Collection<E> events) {
-        try {
-            unsafeCreateEvents(events);
-        } catch (ConstraintViolationException cve) {
-            // keep the validation exceptions
-            throw cve;
-        } catch (Exception ex) {
-            LoggerFactory.getLogger(getClass()).error("Exception creating New Relic events " + ex);
-        }
-    }
+    <E> void createEvents(@Valid @NonNull Collection<E> events);
 
     default <E> void unsafeCreateEvent(@Valid @NonNull E event) throws Exception {
         unsafeCreateEvents(Collections.singleton(event));

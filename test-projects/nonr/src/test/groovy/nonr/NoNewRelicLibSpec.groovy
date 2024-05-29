@@ -122,4 +122,11 @@ class NoNewRelicLibSpec extends Specification {
             value << [null, '']
     }
 
+    void 'send critical event'() {
+        when:
+            service.createEvent(new CriticalEvent('test'))
+        then:
+            noExceptionThrown()
+    }
+
 }

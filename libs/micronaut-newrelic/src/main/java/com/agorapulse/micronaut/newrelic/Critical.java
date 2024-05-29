@@ -15,15 +15,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-dependencies {
-    annotationProcessor 'io.micronaut.validation:micronaut-validation-processor'
+package com.agorapulse.micronaut.newrelic;
 
-    implementation 'io.micronaut.validation:micronaut-validation'
-    implementation "io.projectreactor:reactor-core:$projectReactorVersion"
-    implementation 'io.micronaut:micronaut-jackson-databind'
-    implementation 'io.micronaut:micronaut-retry'
+import io.micronaut.core.annotation.Introspected;
 
-    // We don't have a runtime dependency on NR to be able to use the plain HTTP synchronous client on Lambdas.
-    compileOnly 'io.micronaut:micronaut-http-client'
-    compileOnly 'com.newrelic.agent.java:newrelic-api:6.4.2'
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * Critical events are retried when sending to New Relic and there are some troubles sending the events (e.g. connection timeouts and resets).
+ */
+@Inherited
+@Documented
+@Introspected
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE})
+public @interface Critical {
+
 }

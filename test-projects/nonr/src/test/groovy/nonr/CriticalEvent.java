@@ -15,15 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-dependencies {
-    annotationProcessor 'io.micronaut.validation:micronaut-validation-processor'
+package nonr;
 
-    implementation 'io.micronaut.validation:micronaut-validation'
-    implementation "io.projectreactor:reactor-core:$projectReactorVersion"
-    implementation 'io.micronaut:micronaut-jackson-databind'
-    implementation 'io.micronaut:micronaut-retry'
+import com.agorapulse.micronaut.newrelic.Critical;
 
-    // We don't have a runtime dependency on NR to be able to use the plain HTTP synchronous client on Lambdas.
-    compileOnly 'io.micronaut:micronaut-http-client'
-    compileOnly 'com.newrelic.agent.java:newrelic-api:6.4.2'
+@Critical
+public record CriticalEvent(
+    String name
+) {
+
 }
