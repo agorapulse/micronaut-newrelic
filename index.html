@@ -92,7 +92,7 @@ $(addBlockSwitches);
 <h1>Micronaut Newrelic Library</h1>
 <div class="details">
 <span id="author" class="author">Vladimir Orany</span><br>
-<span id="revnumber">version 2.0.1</span>
+<span id="revnumber">version 2.0.2</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -144,7 +144,7 @@ implementation later. You only need to depend on this library:</p>
 
 dependencies {
     // standard Micronaut dependencies
-    implementation 'com.agorapulse:micronaut-newrelic:2.0.1'
+    implementation 'com.agorapulse:micronaut-newrelic:2.0.2'
 }</code></pre>
 </div>
 </div>
@@ -163,11 +163,11 @@ and <code>micronaut-http-client</code>:</p>
 
 dependencies {
     // standard Micronaut dependencies
-    implementation 'com.agorapulse:micronaut-newrelic:2.0.1'
+    implementation 'com.agorapulse:micronaut-newrelic:2.0.2'
     implementation 'io.micronaut:micronaut-http-client'
 
     // for reporting Micronaut URL from controllers
-    implementation 'com.agorapulse:micronaut-newrelic-http:2.0.1'
+    implementation 'com.agorapulse:micronaut-newrelic-http:2.0.2'
 }</code></pre>
 </div>
 </div>
@@ -215,11 +215,11 @@ and the NewRelic Java library. The Java agent must be running alongside.</p>
 
 dependencies {
     // standard Micronaut dependencies
-    implementation 'com.agorapulse:micronaut-newrelic:2.0.1'
+    implementation 'com.agorapulse:micronaut-newrelic:2.0.2'
     implementation 'com.newrelic.agent.java:newrelic-api:4.9.0'
 
     // for reporting Micronaut URL from controllers
-    implementation 'com.agorapulse:micronaut-newrelic-http:2.0.1'
+    implementation 'com.agorapulse:micronaut-newrelic-http:2.0.2'
 }</code></pre>
 </div>
 </div>
@@ -262,6 +262,12 @@ If you use the library in a non-Micronaut environment (e.g., Grails), ensure you
 <p>The events can optionally implement the <code>NewRelicInsightsEvent</code> interface,
 which let you fine-tune the <code>eventType</code> and <code>timestamp</code> properties.</p>
 </div>
+<div class="paragraph">
+<p>There might be some HTTP communication issues when communicating with the NewRelic Insights API when using the HTTP client. By default, the error is only logged as a warning. You can fine tune the logging level by setting <code>newrelic.log-level</code> Micronaut property to one of the possible values: <code>TRACE</code>, <code>DEBUG</code>, <code>INFO</code>, <code>WARN</code>, <code>ERROR</code>, <code>OFF</code>.</p>
+</div>
+<div class="paragraph">
+<p>You can mark your events with <code>@Critical</code> annotation to try to retry the event delivery when there is any communication issue such as connection timeout or reset. The default number of retries is 3, but you can change it by setting the <code>newrelic.retry-count</code> Micronaut property. If you are using <code>NewRelicInsightsEvent</code> interface, you can also mark your event critical by returning <code>true</code> from the <code>isCritical</code> method. If you are not implementing the <code>NewRelicInsightsEvent</code> interface then you can still add <code>critical</code> property to your event and set it to <code>true</code>.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -278,8 +284,8 @@ which let you fine-tune the <code>eventType</code> and <code>timestamp</code> pr
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 2.0.1<br>
-Last updated 2024-01-03 13:02:38 UTC
+Version 2.0.2<br>
+Last updated 2024-05-29 09:46:14 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
