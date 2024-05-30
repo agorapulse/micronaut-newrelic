@@ -97,6 +97,9 @@ public class DefaultNewRelicInsightsService implements NewRelicInsightsService {
             .filter(EventPayloadExtractor::isNonCritical)
             .toList();
 
+        criticalEvents.forEach(event -> EventPayloadExtractor.removeCritical(event));
+        nonCriticalEvents.forEach(event -> EventPayloadExtractor.removeCritical(event));
+
         if (!criticalEvents.isEmpty()) {
             this.criticalClient.createEvents(criticalEvents);
         }

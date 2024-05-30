@@ -29,6 +29,10 @@ public interface EventPayloadExtractor {
         return !isCritical(payload);
     }
 
+    static void removeCritical(Map<String, Object> event) {
+        event.remove("critical");
+    }
+
     /**
      * Extracts the paylaod for the event.
      *
