@@ -18,7 +18,6 @@ import java.lang.annotation.Target;
 @Documented
 @Introspected
 @Retention(RetentionPolicy.RUNTIME)
-//@Target({ElementType.METHOD, ElementType.FIELD})
 @Target({ElementType.METHOD})
 public @interface AnyGetter {
 }
