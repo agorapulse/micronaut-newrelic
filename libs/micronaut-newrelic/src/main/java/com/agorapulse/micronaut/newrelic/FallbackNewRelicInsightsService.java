@@ -27,6 +27,8 @@ import io.micronaut.core.annotation.NonNull;
 import jakarta.inject.Singleton;
 import jakarta.validation.Valid;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 @Secondary
 @Singleton
@@ -34,9 +36,12 @@ public class FallbackNewRelicInsightsService implements NewRelicInsightsService 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NewRelicInsightsService.class);
 
+    private final EventPayloadExtractor extractor;
     private final ObjectMapper mapper;
 
-    public FallbackNewRelicInsightsService(ObjectMapper mapper) {
+    public FallbackNewRelicInsightsService(EventPayloadExtractor extractor,
+                                           ObjectMapper mapper) {
+        this.extractor = extractor;
         this.mapper = mapper;
     }
 
@@ -48,7 +53,8 @@ public class FallbackNewRelicInsightsService implements NewRelicInsightsService 
     @Override
     public <E> void createEvents(Collection<E> events) {
         try {
-            LOGGER.info("Following events not sent to NewRelic:\n{}", mapper.writerWithDefaultPrettyPrinter().writeValueAsString(events));
+            List<Map<String, Object>> payloads = events.stream().map(extractor::extractPayload).toList();
+            LOGGER.info("Following events not sent to NewRelic:\n{}", mapper.writerWithDefaultPrettyPrinter().writeValueAsString(payloads));
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException(e);
         }

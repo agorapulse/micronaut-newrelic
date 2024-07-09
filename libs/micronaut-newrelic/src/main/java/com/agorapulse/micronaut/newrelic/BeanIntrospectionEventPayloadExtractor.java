@@ -19,8 +19,9 @@ package com.agorapulse.micronaut.newrelic;
 
 import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.beans.BeanIntrospector;
-
+import io.micronaut.core.beans.BeanProperty;
 import jakarta.inject.Singleton;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -44,10 +45,23 @@ public class BeanIntrospectionEventPayloadExtractor implements EventPayloadExtra
         Map<String, Object> map = new HashMap<>(propertyNames.length - 1);
 
         for (String name : propertyNames) {
-            introspection.getProperty(name)
-                .flatMap(p -> Optional.ofNullable(p.get(event)))
-                .map(v -> (v instanceof Boolean || v instanceof Number) ? v : String.valueOf(v))
-                .ifPresent(v -> map.put(name, v));
+            Optional<BeanProperty<E, Object>> property = introspection.getProperty(name);
+            if (property.isEmpty()) {
+                continue;
+            }
+            boolean isAnyGetter = property.get().getAnnotationMetadata().isAnnotationPresent(AnyGetter.class.getName());
+            if (!isAnyGetter) {
+                map.put(name, getValueWithSupportedType(property.get().get(event)));
+                continue;
+            }
+            if (property.get().get(event) instanceof Map additionalData) {
+                if (additionalData.keySet().stream().anyMatch(key -> !(key instanceof String))) {
+                    throw new IllegalArgumentException("AnyGetter annotated getter must return Map<String, Object> but found a non String key in " + additionalData);
+                }
+                Map<String, Object> formattedAdditionalData = new HashMap<>(additionalData);
+                formattedAdditionalData.replaceAll((k, v) -> getValueWithSupportedType(v));
+                map.putAll(formattedAdditionalData);
+            }
         }
 
         map.computeIfAbsent("eventType", k -> introspection.getBeanType().getSimpleName());
@@ -56,4 +70,10 @@ public class BeanIntrospectionEventPayloadExtractor implements EventPayloadExtra
         return map;
     }
 
+    private static Object getValueWithSupportedType(Object value) {
+        if (value == null) {
+            return null;
+        }
+        return value instanceof Boolean || value instanceof Number ? value : String.valueOf(value);
+    }
 }
