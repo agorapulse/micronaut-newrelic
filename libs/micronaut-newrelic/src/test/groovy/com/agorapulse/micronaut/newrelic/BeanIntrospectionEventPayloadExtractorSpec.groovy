@@ -38,7 +38,6 @@ class BeanIntrospectionEventPayloadExtractorSpec extends Specification {
         when:
             Map<String, Object> payload = extractor.extractPayload(event)
         then:
-            println 'Payload: ' + payload
             payload.eventType == 'TestEvent'
             payload.timestamp
             payload.message == message
@@ -53,7 +52,6 @@ class BeanIntrospectionEventPayloadExtractorSpec extends Specification {
         when:
             Map<String, Object> payload = extractor.extractPayload(event)
         then:
-            println 'Payload: ' + payload
             noExceptionThrown()
             payload.eventType == 'TestEvent'
             payload.timestamp
@@ -69,7 +67,6 @@ class BeanIntrospectionEventPayloadExtractorSpec extends Specification {
         when:
             Map<String, Object> payload = extractor.extractPayload(event)
         then:
-            println 'Payload: ' + payload
             noExceptionThrown()
             payload.eventType == 'TestEvent'
             payload.timestamp
@@ -87,4 +84,5 @@ class BeanIntrospectionEventPayloadExtractorSpec extends Specification {
             IllegalArgumentException e = thrown(IllegalArgumentException)
             e.message == 'AnyGetter annotated getter must return Map<String, Object> but found a non String key in {1=OOPS}'
     }
+
 }
