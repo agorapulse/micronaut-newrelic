@@ -17,6 +17,8 @@
  */
 package com.agorapulse.micronaut.newrelic
 
+import com.agorapulse.micronaut.newrelic.limitation.NewRelicLimitationsService
+import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
 import spock.lang.Specification
@@ -26,6 +28,12 @@ class BeanIntrospectionEventPayloadExtractorSpec extends Specification {
 
     @Inject
     BeanIntrospectionEventPayloadExtractor extractor
+//
+//    @MockBean(NewRelicLimitationsService)
+//    NewRelicLimitationsService newRelicLimitationsService = Mock(NewRelicLimitationsService) {
+//        getMaxValueLength() >> TEST_MAX_VALUE_LENGTH
+//        truncateValue()
+//    }
 
     void 'extract payload from event with Flatten'() {
         given:
@@ -85,4 +93,21 @@ class BeanIntrospectionEventPayloadExtractorSpec extends Specification {
             e.message == '@Flatten annotated getter must return Map<String, Object> but found a non String key in {1=OOPS}'
     }
 
+    void 'extract payload with truncated value'() {
+        given:
+            String message = 'short message'
+            String firstKey = 'firstKey'
+            String firstValue = 'azertylqgihfglihqlgihqdfghqfigqfslqf'
+            String truncatedFirstValue = 'azertylqgihfglihqlgi'
+            TestEvent event = new TestEvent(message, Map.of(firstKey, firstValue))
+        when:
+            Map<String, Object> payload = extractor.extractPayload(event)
+        then:
+            payload.eventType == 'TestEvent'
+            payload.timestamp
+            payload.message == message
+            firstValue.length() > TestNewRelicLimitationsService.MAX_VALUE_LENGTH
+            payload.firstKey.length() == TestNewRelicLimitationsService.MAX_VALUE_LENGTH
+            payload.firstKey == truncatedFirstValue
+    }
 }
