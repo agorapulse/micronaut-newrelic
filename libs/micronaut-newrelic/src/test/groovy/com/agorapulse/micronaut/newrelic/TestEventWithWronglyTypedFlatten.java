@@ -22,12 +22,12 @@ import io.micronaut.core.annotation.Introspected;
 import java.util.Map;
 
 @Introspected
-public class TestEventWithWronglyTypedAnyGetter implements NewRelicInsightsEvent {
+public class TestEventWithWronglyTypedFlatten implements NewRelicInsightsEvent {
 
 
-    public TestEventWithWronglyTypedAnyGetter() {}
+    public TestEventWithWronglyTypedFlatten() {}
 
-    @AnyGetter
+    @Flatten
     public Map getAdditionalData() {
         return Map.of(1, "OOPS");
     }

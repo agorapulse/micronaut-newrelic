@@ -27,7 +27,7 @@ class BeanIntrospectionEventPayloadExtractorSpec extends Specification {
     @Inject
     BeanIntrospectionEventPayloadExtractor extractor
 
-    void 'extract payload from event with AnyGetter'() {
+    void 'extract payload from event with Flatten'() {
         given:
             String message = 'some message'
             String firstKey = 'firstKey'
@@ -45,7 +45,7 @@ class BeanIntrospectionEventPayloadExtractorSpec extends Specification {
             payload.secondKey == secondValue
     }
 
-    void 'extract payload from event with null AnyGetter value'() {
+    void 'extract payload from event with null Flatten value'() {
         given:
             String message = 'some message'
             TestEvent event = new TestEvent(message, null)
@@ -60,7 +60,7 @@ class BeanIntrospectionEventPayloadExtractorSpec extends Specification {
             !payload.secondKey
     }
 
-    void 'extract payload from event with empty AnyGetter value'() {
+    void 'extract payload from event with empty Flatten value'() {
         given:
             String message = 'some message'
             TestEvent event = new TestEvent(message, [:])
@@ -75,14 +75,14 @@ class BeanIntrospectionEventPayloadExtractorSpec extends Specification {
             !payload.secondKey
     }
 
-    void 'extract payload should fail if AnyGetter map has non string key'() {
+    void 'extract payload should fail if Flatten map has non string key'() {
         given:
-            TestEventWithWronglyTypedAnyGetter event = new TestEventWithWronglyTypedAnyGetter()
+            TestEventWithWronglyTypedFlatten event = new TestEventWithWronglyTypedFlatten()
         when:
             extractor.extractPayload(event)
         then:
             IllegalArgumentException e = thrown(IllegalArgumentException)
-            e.message == 'AnyGetter annotated getter must return Map<String, Object> but found a non String key in {1=OOPS}'
+            e.message == '@Flatten annotated getter must return Map<String, Object> but found a non String key in {1=OOPS}'
     }
 
 }

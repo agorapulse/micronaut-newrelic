@@ -32,7 +32,7 @@ public class TestEvent implements NewRelicInsightsEvent {
         this.someNameForAdditionalData = additionalData;
     }
 
-    @AnyGetter
+    @Flatten
     public Map<String, String> getAdditionalData() {
         return someNameForAdditionalData;
     }
