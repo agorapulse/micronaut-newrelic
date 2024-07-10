@@ -52,6 +52,7 @@ public class BeanIntrospectionEventPayloadExtractor implements EventPayloadExtra
 
         map.computeIfAbsent("eventType", k -> introspection.getBeanType().getSimpleName());
         map.computeIfAbsent("timestamp", k -> System.currentTimeMillis());
+        map.computeIfAbsent("critical", k -> introspection.findAnnotation(Critical.class).isPresent());
         return map;
     }
 

@@ -21,6 +21,18 @@ import java.util.Map;
 
 public interface EventPayloadExtractor {
 
+    static boolean isCritical(Map<String, Object> payload) {
+        return payload.containsKey("critical") && Boolean.TRUE.equals(payload.get("critical"));
+    }
+
+    static boolean isNonCritical(Map<String, Object> payload) {
+        return !isCritical(payload);
+    }
+
+    static void removeCritical(Map<String, Object> event) {
+        event.remove("critical");
+    }
+
     /**
      * Extracts the paylaod for the event.
      *

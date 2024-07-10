@@ -17,6 +17,7 @@
  */
 package com.agorapulse.micronaut.newrelic;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.annotation.Secondary;
 import org.slf4j.Logger;
@@ -41,7 +42,15 @@ public class FallbackNewRelicInsightsService implements NewRelicInsightsService 
 
     @Override
     public <E> void unsafeCreateEvents(@NonNull @Valid Collection<E> events) throws Exception {
-        LOGGER.info("Following events not sent to NewRelic:\n" + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(events));
+        createEvents(events);
     }
 
+    @Override
+    public <E> void createEvents(Collection<E> events) {
+        try {
+            LOGGER.info("Following events not sent to NewRelic:\n{}", mapper.writerWithDefaultPrettyPrinter().writeValueAsString(events));
+        } catch (JsonProcessingException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
 }

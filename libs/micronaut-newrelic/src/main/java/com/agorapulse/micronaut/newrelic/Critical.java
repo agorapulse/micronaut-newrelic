@@ -17,26 +17,23 @@
  */
 package com.agorapulse.micronaut.newrelic;
 
-import io.micronaut.validation.Validated;
+import io.micronaut.core.annotation.Introspected;
 
-import io.micronaut.core.annotation.NonNull;
-import jakarta.validation.Valid;
-import java.util.Collection;
-import java.util.Collections;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Validated
-public interface NewRelicInsightsService {
-
-    default <E> void createEvent(@Valid @NonNull E event) {
-        createEvents(Collections.singleton(event));
-    }
-
-    <E> void createEvents(@Valid @NonNull Collection<E> events);
-
-    default <E> void unsafeCreateEvent(@Valid @NonNull E event) throws Exception {
-        unsafeCreateEvents(Collections.singleton(event));
-    }
-
-    <E> void unsafeCreateEvents(@Valid @NonNull Collection<E> events) throws Exception;
+/**
+ * Critical events are retried when sending to New Relic and there are some troubles sending the events (e.g. connection timeouts and resets).
+ */
+@Inherited
+@Documented
+@Introspected
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE})
+public @interface Critical {
 
 }
