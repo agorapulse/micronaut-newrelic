@@ -17,6 +17,7 @@
  */
 package com.agorapulse.micronaut.newrelic;
 
+import com.agorapulse.micronaut.newrelic.limitation.NewRelicLimitationsService;
 import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.beans.BeanIntrospector;
 import jakarta.inject.Singleton;
@@ -28,6 +29,11 @@ import java.util.Map;
 public class BeanIntrospectionEventPayloadExtractor implements EventPayloadExtractor {
 
     private final BeanIntrospector introspector = BeanIntrospector.SHARED;
+    private final NewRelicLimitationsService limitationsService;
+
+    public BeanIntrospectionEventPayloadExtractor(NewRelicLimitationsService limitationsService) {
+        this.limitationsService = limitationsService;
+    }
 
     @Override
     @SuppressWarnings("unchecked")
@@ -56,6 +62,9 @@ public class BeanIntrospectionEventPayloadExtractor implements EventPayloadExtra
         map.computeIfAbsent("eventType", k -> introspection.getBeanType().getSimpleName());
         map.computeIfAbsent("timestamp", k -> System.currentTimeMillis());
         map.computeIfAbsent("critical", k -> introspection.findAnnotation(Critical.class).isPresent());
+
+        map.replaceAll((k, v) -> limitationsService.truncateValue(v));
+
         return map;
     }
 
