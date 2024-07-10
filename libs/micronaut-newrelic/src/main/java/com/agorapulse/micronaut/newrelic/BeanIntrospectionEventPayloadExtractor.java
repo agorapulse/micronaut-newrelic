@@ -19,12 +19,10 @@ package com.agorapulse.micronaut.newrelic;
 
 import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.beans.BeanIntrospector;
-import io.micronaut.core.beans.BeanProperty;
 import jakarta.inject.Singleton;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Singleton
 public class BeanIntrospectionEventPayloadExtractor implements EventPayloadExtractor {
