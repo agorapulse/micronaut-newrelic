@@ -17,7 +17,6 @@
  */
 package com.agorapulse.micronaut.newrelic
 
-
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
 import spock.lang.Specification
@@ -103,4 +102,5 @@ class BeanIntrospectionEventPayloadExtractorSpec extends Specification {
             payload.firstKey.length() == TestNewRelicLimitationsService.MAX_VALUE_LENGTH
             payload.firstKey == truncatedFirstValue
     }
+
 }
