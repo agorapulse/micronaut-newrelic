@@ -17,8 +17,7 @@
  */
 package com.agorapulse.micronaut.newrelic
 
-import com.agorapulse.micronaut.newrelic.limitation.NewRelicLimitationsService
-import io.micronaut.test.annotation.MockBean
+
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
 import spock.lang.Specification
@@ -28,12 +27,6 @@ class BeanIntrospectionEventPayloadExtractorSpec extends Specification {
 
     @Inject
     BeanIntrospectionEventPayloadExtractor extractor
-//
-//    @MockBean(NewRelicLimitationsService)
-//    NewRelicLimitationsService newRelicLimitationsService = Mock(NewRelicLimitationsService) {
-//        getMaxValueLength() >> TEST_MAX_VALUE_LENGTH
-//        truncateValue()
-//    }
 
     void 'extract payload from event with Flatten'() {
         given:
