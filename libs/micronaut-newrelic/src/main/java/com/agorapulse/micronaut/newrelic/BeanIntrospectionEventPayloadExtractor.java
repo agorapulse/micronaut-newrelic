@@ -45,29 +45,35 @@ public class BeanIntrospectionEventPayloadExtractor implements EventPayloadExtra
         Map<String, Object> map = new HashMap<>(propertyNames.length - 1);
 
         for (String name : propertyNames) {
-            Optional<BeanProperty<E, Object>> property = introspection.getProperty(name);
-            if (property.isEmpty()) {
-                continue;
-            }
-            boolean isFlatten = property.get().getAnnotationMetadata().isAnnotationPresent(Flatten.class.getName());
-            if (!isFlatten) {
-                map.put(name, getValueWithSupportedType(property.get().get(event)));
-                continue;
-            }
-            if (property.get().get(event) instanceof Map additionalData) {
-                if (additionalData.keySet().stream().anyMatch(key -> !(key instanceof String))) {
-                    throw new IllegalArgumentException("@Flatten annotated getter must return Map<String, Object> but found a non String key in " + additionalData);
+            introspection.getProperty(name).ifPresent(property -> {
+                boolean isFlatten = property.getAnnotationMetadata().isAnnotationPresent(Flatten.class.getName());
+                if (!isFlatten) {
+                    map.put(name, getValueWithSupportedType(property.get(event)));
+                } else {
+                    setFlattenProperties(property.get(event), map);
                 }
-                Map<String, Object> formattedAdditionalData = new HashMap<>(additionalData);
-                formattedAdditionalData.replaceAll((k, v) -> getValueWithSupportedType(v));
-                map.putAll(formattedAdditionalData);
-            }
+            });
         }
 
         map.computeIfAbsent("eventType", k -> introspection.getBeanType().getSimpleName());
         map.computeIfAbsent("timestamp", k -> System.currentTimeMillis());
         map.computeIfAbsent("critical", k -> introspection.findAnnotation(Critical.class).isPresent());
         return map;
+    }
+
+    private static void setFlattenProperties(Object value, Map<String, Object> map) {
+        if (value == null) {
+            return;
+        }
+        if (!(value instanceof Map additionalData)) {
+            throw new IllegalArgumentException("@Flatten annotated getter must return Map<String, Object> but found " + value);
+        }
+        if (additionalData.keySet().stream().anyMatch(key -> !(key instanceof String))) {
+            throw new IllegalArgumentException("@Flatten annotated getter must return Map<String, Object> but found a non String key in " + additionalData);
+        }
+        Map<String, Object> formattedAdditionalData = new HashMap<>(additionalData);
+        formattedAdditionalData.replaceAll((k, v) -> getValueWithSupportedType(v));
+        map.putAll(formattedAdditionalData);
     }
 
     private static Object getValueWithSupportedType(Object value) {
