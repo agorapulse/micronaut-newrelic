@@ -4,7 +4,6 @@ import com.agorapulse.micronaut.newrelic.limitation.FallbackNewRelicLimitationsS
 import com.agorapulse.micronaut.newrelic.limitation.NewRelicLimitationsService;
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.context.annotation.Replaces;
-import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
 
 @Primary
