@@ -19,11 +19,10 @@ package com.agorapulse.micronaut.newrelic;
 
 import io.micronaut.core.beans.BeanIntrospection;
 import io.micronaut.core.beans.BeanIntrospector;
-
 import jakarta.inject.Singleton;
+
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Singleton
 public class BeanIntrospectionEventPayloadExtractor implements EventPayloadExtractor {
@@ -44,10 +43,14 @@ public class BeanIntrospectionEventPayloadExtractor implements EventPayloadExtra
         Map<String, Object> map = new HashMap<>(propertyNames.length - 1);
 
         for (String name : propertyNames) {
-            introspection.getProperty(name)
-                .flatMap(p -> Optional.ofNullable(p.get(event)))
-                .map(v -> (v instanceof Boolean || v instanceof Number) ? v : String.valueOf(v))
-                .ifPresent(v -> map.put(name, v));
+            introspection.getProperty(name).ifPresent(property -> {
+                boolean isFlatten = property.getAnnotationMetadata().isAnnotationPresent(Flatten.class.getName());
+                if (!isFlatten) {
+                    map.put(name, getValueWithSupportedType(property.get(event)));
+                } else {
+                    setFlattenProperties(property.get(event), map);
+                }
+            });
         }
 
         map.computeIfAbsent("eventType", k -> introspection.getBeanType().getSimpleName());
@@ -56,4 +59,25 @@ public class BeanIntrospectionEventPayloadExtractor implements EventPayloadExtra
         return map;
     }
 
+    private static void setFlattenProperties(Object value, Map<String, Object> map) {
+        if (value == null) {
+            return;
+        }
+        if (!(value instanceof Map additionalData)) {
+            throw new IllegalArgumentException("@Flatten annotated getter must return Map<String, Object> but found " + value);
+        }
+        if (additionalData.keySet().stream().anyMatch(key -> !(key instanceof String))) {
+            throw new IllegalArgumentException("@Flatten annotated getter must return Map<String, Object> but found a non String key in " + additionalData);
+        }
+        Map<String, Object> formattedAdditionalData = new HashMap<>(additionalData);
+        formattedAdditionalData.replaceAll((k, v) -> getValueWithSupportedType(v));
+        map.putAll(formattedAdditionalData);
+    }
+
+    private static Object getValueWithSupportedType(Object value) {
+        if (value == null) {
+            return null;
+        }
+        return value instanceof Boolean || value instanceof Number ? value : String.valueOf(value);
+    }
 }

@@ -22,6 +22,11 @@ WARNING: If you use the library in a non-Micronaut environment (e.g., Grails), e
 The events can optionally implement the `NewRelicInsightsEvent` interface,
 which let you fine-tune the `eventType` and `timestamp` properties.
 
+You can have getters annotated with `@Flatten` to include them in the event.
+Those getters should return a `Map<String, Object>`.
+Then all the entries in the map will be included in the event.
+If you have multiple getters annotated with `@Flatten`, the entries will be merged with no guarantee on the order. The recommendation is to only have one getter annotated with `@Flatten`.
+
 There might be some HTTP communication issues when communicating with the NewRelic Insights API when using the HTTP client. By default, the error is only logged as a warning. You can fine tune the logging level by setting `newrelic.log-level` Micronaut property to one of the possible values: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`, `OFF`.
 
 You can mark your events with `@Critical` annotation to try to retry the event delivery when there is any communication issue such as connection timeout or reset. The default number of retries is 3, but you can change it by setting the `newrelic.retry-count` Micronaut property. If you are using `NewRelicInsightsEvent` interface, you can also mark your event critical by returning `true` from the `isCritical` method. If you are not implementing the `NewRelicInsightsEvent` interface then you can still add `critical` property to your event and set it to `true`.

@@ -39,7 +39,7 @@ class FallbackSpec extends Specification {
         service = context.getBean(NewRelicInsightsService)
     }
 
-    void 'default new relic instance is enabled'() {
+    void 'fallback new relic instance is enabled'() {
         expect:
             !context.containsBean(NewRelicInsightsClient)
             service instanceof FallbackNewRelicInsightsService
