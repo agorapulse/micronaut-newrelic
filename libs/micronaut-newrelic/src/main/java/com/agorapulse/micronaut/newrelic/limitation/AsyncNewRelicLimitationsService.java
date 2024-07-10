@@ -18,10 +18,12 @@
 package com.agorapulse.micronaut.newrelic.limitation;
 
 import com.agorapulse.micronaut.newrelic.AsyncNewRelicInsightsService;
+import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
 
 @Requires(beans = AsyncNewRelicInsightsService.class)
+@Replaces(FallbackNewRelicLimitationsService.class)
 @Singleton
 public class AsyncNewRelicLimitationsService implements NewRelicLimitationsService {
 

@@ -19,11 +19,13 @@ package com.agorapulse.micronaut.newrelic.limitation;
 
 import com.agorapulse.micronaut.newrelic.DefaultNewRelicInsightsService;
 import io.micronaut.context.annotation.Primary;
+import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
 
 @Primary
 @Requires(beans = DefaultNewRelicInsightsService.class)
+@Replaces(FallbackNewRelicLimitationsService.class)
 @Singleton
 public class DefaultNewRelicLimitationsService implements NewRelicLimitationsService {
 
