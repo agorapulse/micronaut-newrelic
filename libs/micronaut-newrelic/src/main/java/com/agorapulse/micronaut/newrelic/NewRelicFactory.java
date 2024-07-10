@@ -23,7 +23,6 @@ import com.newrelic.api.agent.NewRelic;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-
 import jakarta.inject.Singleton;
 
 @Factory

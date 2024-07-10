@@ -18,15 +18,15 @@
 package com.agorapulse.micronaut.newrelic;
 
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.filter.ClientFilterChain;
 import io.micronaut.http.filter.HttpClientFilter;
+import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
-import io.micronaut.core.annotation.Nullable;
-import jakarta.inject.Singleton;
 
 @Singleton
 @NewRelicInsights

@@ -17,10 +17,10 @@
  */
 package com.agorapulse.micronaut.newrelic;
 
-import io.micronaut.validation.Validated;
-
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.validation.Validated;
 import jakarta.validation.Valid;
+
 import java.util.Collection;
 import java.util.Collections;
 

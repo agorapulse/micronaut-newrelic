@@ -21,10 +21,10 @@ import com.newrelic.api.agent.Insights;
 import com.newrelic.api.agent.NewRelic;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
-
 import io.micronaut.core.annotation.NonNull;
 import jakarta.inject.Singleton;
 import jakarta.validation.Valid;
+
 import java.util.Collection;
 import java.util.Map;
 
