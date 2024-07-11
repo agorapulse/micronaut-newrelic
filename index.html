@@ -92,7 +92,7 @@ $(addBlockSwitches);
 <h1>Micronaut Newrelic Library</h1>
 <div class="details">
 <span id="author" class="author">Vladimir Orany</span><br>
-<span id="revnumber">version 2.0.3</span>
+<span id="revnumber">version 2.0.4</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -144,7 +144,7 @@ implementation later. You only need to depend on this library:</p>
 
 dependencies {
     // standard Micronaut dependencies
-    implementation 'com.agorapulse:micronaut-newrelic:2.0.3'
+    implementation 'com.agorapulse:micronaut-newrelic:2.0.4'
 }</code></pre>
 </div>
 </div>
@@ -163,11 +163,11 @@ and <code>micronaut-http-client</code>:</p>
 
 dependencies {
     // standard Micronaut dependencies
-    implementation 'com.agorapulse:micronaut-newrelic:2.0.3'
+    implementation 'com.agorapulse:micronaut-newrelic:2.0.4'
     implementation 'io.micronaut:micronaut-http-client'
 
     // for reporting Micronaut URL from controllers
-    implementation 'com.agorapulse:micronaut-newrelic-http:2.0.3'
+    implementation 'com.agorapulse:micronaut-newrelic-http:2.0.4'
 }</code></pre>
 </div>
 </div>
@@ -215,11 +215,11 @@ and the NewRelic Java library. The Java agent must be running alongside.</p>
 
 dependencies {
     // standard Micronaut dependencies
-    implementation 'com.agorapulse:micronaut-newrelic:2.0.3'
+    implementation 'com.agorapulse:micronaut-newrelic:2.0.4'
     implementation 'com.newrelic.agent.java:newrelic-api:4.9.0'
 
     // for reporting Micronaut URL from controllers
-    implementation 'com.agorapulse:micronaut-newrelic-http:2.0.3'
+    implementation 'com.agorapulse:micronaut-newrelic-http:2.0.4'
 }</code></pre>
 </div>
 </div>
@@ -263,6 +263,26 @@ If you use the library in a non-Micronaut environment (e.g., Grails), ensure you
 which let you fine-tune the <code>eventType</code> and <code>timestamp</code> properties.</p>
 </div>
 <div class="paragraph">
+<p>All event values are truncated to comply to the NewRelic Insights API limits:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>255 characters when agent is used</p>
+</li>
+<li>
+<p>4096 characters when using the API directly.<br>
+<a href="https://docs.newrelic.com/docs/data-apis/custom-data/custom-events/data-requirements-limits-custom-event-data/#general" class="bare">https://docs.newrelic.com/docs/data-apis/custom-data/custom-events/data-requirements-limits-custom-event-data/#general</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You can have getters annotated with <code>@Flatten</code> to include them in the event.
+Those getters should return a <code>Map&lt;String, Object&gt;</code>.
+Then all the entries in the map will be included in the event.
+If you have multiple getters annotated with <code>@Flatten</code>, the entries will be merged with no guarantee on the order. The recommendation is to only have one getter annotated with <code>@Flatten</code>.</p>
+</div>
+<div class="paragraph">
 <p>There might be some HTTP communication issues when communicating with the NewRelic Insights API when using the HTTP client. By default, the error is only logged as a warning. You can fine tune the logging level by setting <code>newrelic.log-level</code> Micronaut property to one of the possible values: <code>TRACE</code>, <code>DEBUG</code>, <code>INFO</code>, <code>WARN</code>, <code>ERROR</code>, <code>OFF</code>.</p>
 </div>
 <div class="paragraph">
@@ -284,8 +304,8 @@ which let you fine-tune the <code>eventType</code> and <code>timestamp</code> pr
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 2.0.3<br>
-Last updated 2024-06-04 11:29:52 UTC
+Version 2.0.4<br>
+Last updated 2024-07-11 08:09:30 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
