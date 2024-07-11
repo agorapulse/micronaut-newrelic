@@ -15,31 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.agorapulse.micronaut.newrelic;
+package com.agorapulse.micronaut.newrelic.limitation;
 
-import com.newrelic.api.agent.Agent;
-import com.newrelic.api.agent.Insights;
-import com.newrelic.api.agent.NewRelic;
-import io.micronaut.context.annotation.Bean;
-import io.micronaut.context.annotation.Factory;
+import com.agorapulse.micronaut.newrelic.FallbackNewRelicInsightsService;
+import io.micronaut.context.annotation.Primary;
 import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
 
-@Factory
-public class NewRelicFactory {
+@Primary
+@Requires(beans = FallbackNewRelicInsightsService.class)
+@Singleton
+public class FallbackNewRelicLimitationsService implements NewRelicLimitationsService {
 
-    @Bean
-    @Singleton
-    @Requires(classes = NewRelic.class)
-    public Agent newRelicAgent() {
-        return NewRelic.getAgent();
+    @Override
+    public int getMaxValueLength() {
+        return Integer.MAX_VALUE;
     }
-
-    @Bean
-    @Singleton
-    @Requires(classes = NewRelic.class)
-    public Insights newRelicInsights(Agent newRelicAgent) {
-        return newRelicAgent.getInsights();
-    }
-
 }

@@ -17,29 +17,21 @@
  */
 package com.agorapulse.micronaut.newrelic;
 
-import com.newrelic.api.agent.Agent;
-import com.newrelic.api.agent.Insights;
-import com.newrelic.api.agent.NewRelic;
-import io.micronaut.context.annotation.Bean;
-import io.micronaut.context.annotation.Factory;
-import io.micronaut.context.annotation.Requires;
+import com.agorapulse.micronaut.newrelic.limitation.FallbackNewRelicLimitationsService;
+import com.agorapulse.micronaut.newrelic.limitation.NewRelicLimitationsService;
+import io.micronaut.context.annotation.Primary;
+import io.micronaut.context.annotation.Replaces;
 import jakarta.inject.Singleton;
 
-@Factory
-public class NewRelicFactory {
+@Primary
+@Replaces(FallbackNewRelicLimitationsService.class)
+@Singleton
+public class TestNewRelicLimitationsService implements NewRelicLimitationsService {
 
-    @Bean
-    @Singleton
-    @Requires(classes = NewRelic.class)
-    public Agent newRelicAgent() {
-        return NewRelic.getAgent();
+    public static final int MAX_VALUE_LENGTH = 20;
+
+    @Override
+    public int getMaxValueLength() {
+        return MAX_VALUE_LENGTH;
     }
-
-    @Bean
-    @Singleton
-    @Requires(classes = NewRelic.class)
-    public Insights newRelicInsights(Agent newRelicAgent) {
-        return newRelicAgent.getInsights();
-    }
-
 }

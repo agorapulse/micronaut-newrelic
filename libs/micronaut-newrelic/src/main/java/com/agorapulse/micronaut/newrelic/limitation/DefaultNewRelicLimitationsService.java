@@ -15,31 +15,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.agorapulse.micronaut.newrelic;
+package com.agorapulse.micronaut.newrelic.limitation;
 
-import com.newrelic.api.agent.Agent;
-import com.newrelic.api.agent.Insights;
-import com.newrelic.api.agent.NewRelic;
-import io.micronaut.context.annotation.Bean;
-import io.micronaut.context.annotation.Factory;
+import com.agorapulse.micronaut.newrelic.DefaultNewRelicInsightsService;
+import io.micronaut.context.annotation.Primary;
+import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
 import jakarta.inject.Singleton;
 
-@Factory
-public class NewRelicFactory {
+@Primary
+@Requires(beans = DefaultNewRelicInsightsService.class)
+@Replaces(FallbackNewRelicLimitationsService.class)
+@Singleton
+public class DefaultNewRelicLimitationsService implements NewRelicLimitationsService {
 
-    @Bean
-    @Singleton
-    @Requires(classes = NewRelic.class)
-    public Agent newRelicAgent() {
-        return NewRelic.getAgent();
+    // https://docs.newrelic.com/docs/data-apis/custom-data/custom-events/data-requirements-limits-custom-event-data/#general
+    private static final int MAX_VALUE_LENGTH = 4096;
+
+    @Override
+    public int getMaxValueLength() {
+        return MAX_VALUE_LENGTH;
     }
-
-    @Bean
-    @Singleton
-    @Requires(classes = NewRelic.class)
-    public Insights newRelicInsights(Agent newRelicAgent) {
-        return newRelicAgent.getInsights();
-    }
-
 }

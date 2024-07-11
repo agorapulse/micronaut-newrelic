@@ -18,7 +18,6 @@
 package com.agorapulse.micronaut.newrelic;
 
 import io.micronaut.core.annotation.Introspected;
-
 import io.micronaut.core.beans.BeanIntrospector;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
