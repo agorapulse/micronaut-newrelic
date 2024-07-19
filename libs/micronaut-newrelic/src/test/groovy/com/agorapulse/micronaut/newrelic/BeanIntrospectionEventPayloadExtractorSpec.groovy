@@ -115,4 +115,5 @@ class BeanIntrospectionEventPayloadExtractorSpec extends Specification {
             payload.timestamp
             !payload.containsKey('message')
     }
+
 }
