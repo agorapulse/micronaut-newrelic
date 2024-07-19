@@ -103,4 +103,17 @@ class BeanIntrospectionEventPayloadExtractorSpec extends Specification {
             payload.firstKey == truncatedFirstValue
     }
 
+    void 'extract payload from event with a null attribute value'() {
+        given:
+            String message = null
+            TestEvent event = new TestEvent(message, null)
+        when:
+            Map<String, Object> payload = extractor.extractPayload(event)
+        then:
+            noExceptionThrown()
+            payload.eventType == 'TestEvent'
+            payload.timestamp
+            !payload.containsKey('message')
+    }
+
 }

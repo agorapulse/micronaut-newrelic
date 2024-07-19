@@ -50,11 +50,14 @@ public class BeanIntrospectionEventPayloadExtractor implements EventPayloadExtra
 
         for (String name : propertyNames) {
             introspection.getProperty(name).ifPresent(property -> {
-                boolean isFlatten = property.getAnnotationMetadata().isAnnotationPresent(Flatten.class.getName());
-                if (!isFlatten) {
-                    map.put(name, getValueWithSupportedType(property.get(event)));
-                } else {
-                    setFlattenProperties(property.get(event), map);
+                Object propertyValue = property.get(event);
+                if (propertyValue != null) {
+                    boolean isFlatten = property.getAnnotationMetadata().isAnnotationPresent(Flatten.class.getName());
+                    if (!isFlatten) {
+                        map.put(name, getValueWithSupportedType(propertyValue));
+                    } else {
+                        setFlattenProperties(propertyValue, map);
+                    }
                 }
             });
         }
