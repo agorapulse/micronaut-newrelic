@@ -44,7 +44,6 @@ class NewRelicNoopSpec extends Specification {
             !context.containsBean(NewRelicInsightsClient)
             service instanceof FallbackNewRelicInsightsService
 
-
         when:
             27.times {
                 service.createEvent(NewRelicInsightsEvent.create('TestEvent', 'order', it))
