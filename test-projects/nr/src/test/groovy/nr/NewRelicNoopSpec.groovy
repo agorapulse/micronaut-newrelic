@@ -20,6 +20,7 @@ package nr
 import com.agorapulse.micronaut.newrelic.AsyncNewRelicInsightsService
 import com.agorapulse.micronaut.newrelic.FallbackNewRelicInsightsService
 import com.agorapulse.micronaut.newrelic.NewRelicInsightsClient
+import com.agorapulse.micronaut.newrelic.NewRelicInsightsEvent
 import com.agorapulse.micronaut.newrelic.NewRelicInsightsService
 import com.newrelic.api.agent.Agent
 import com.newrelic.api.agent.Insights
@@ -42,6 +43,16 @@ class NewRelicNoopSpec extends Specification {
         expect:
             !context.containsBean(NewRelicInsightsClient)
             service instanceof FallbackNewRelicInsightsService
+
+        when:
+            27.times {
+                service.createEvent(NewRelicInsightsEvent.create('TestEvent', 'order', it))
+            }
+
+        then:
+            ((FallbackNewRelicInsightsService) service).getEvents(NewRelicInsightsEvent).count() == 25
+            ((FallbackNewRelicInsightsService) service).getEvents(NewRelicInsightsEvent).findFirst().orElse(null).value == 2
+
         cleanup:
             context.close()
     }
