@@ -26,18 +26,23 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @Secondary
 @Singleton
 public class FallbackNewRelicInsightsService implements NewRelicInsightsService {
 
+    private static final int MAX_EVENTS = 25;
     private static final Logger LOGGER = LoggerFactory.getLogger(NewRelicInsightsService.class);
 
     private final EventPayloadExtractor extractor;
     private final ObjectMapper mapper;
+    private final Deque<Object> events = new ArrayDeque<>();
 
     public FallbackNewRelicInsightsService(EventPayloadExtractor extractor,
                                            ObjectMapper mapper) {
@@ -55,8 +60,21 @@ public class FallbackNewRelicInsightsService implements NewRelicInsightsService 
         try {
             List<Map<String, Object>> payloads = events.stream().map(extractor::extractPayload).toList();
             LOGGER.info("Following events not sent to NewRelic:\n{}", mapper.writerWithDefaultPrettyPrinter().writeValueAsString(payloads));
+
+            this.events.addAll(events);
+
+            while (this.events.size() > MAX_EVENTS) {
+                this.events.poll();
+            }
+
+            LOGGER.info("You can access {} event(s) using FallbackNewRelicInsightsService#getEvents() method.", this.events.size());
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException(e);
         }
     }
+
+    public <E> Stream<E> getEvents(Class<E> eventType) {
+        return events.stream().filter(eventType::isInstance).map(eventType::cast);
+    }
+
 }
