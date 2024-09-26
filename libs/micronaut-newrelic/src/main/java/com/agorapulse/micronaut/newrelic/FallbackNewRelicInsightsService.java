@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.annotation.Secondary;
 import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.runtime.context.scope.Refreshable;
 import io.micronaut.runtime.context.scope.refresh.RefreshEvent;
 import jakarta.inject.Singleton;
 import jakarta.validation.Valid;
@@ -37,7 +38,8 @@ import java.util.stream.Stream;
 
 @Secondary
 @Singleton
-public class FallbackNewRelicInsightsService implements NewRelicInsightsService, ApplicationEventListener<RefreshEvent> {
+@Refreshable
+public class FallbackNewRelicInsightsService implements NewRelicInsightsService, ApplicationEventListener<RefreshEvent>, AutoCloseable {
 
     private static final int MAX_EVENTS = 25;
     private static final Logger LOGGER = LoggerFactory.getLogger(NewRelicInsightsService.class);
@@ -81,6 +83,11 @@ public class FallbackNewRelicInsightsService implements NewRelicInsightsService,
 
     @Override
     public void onApplicationEvent(RefreshEvent event) {
+        events.clear();
+    }
+
+    @Override
+    public void close() {
         events.clear();
     }
 
