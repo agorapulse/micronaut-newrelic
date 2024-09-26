@@ -18,6 +18,7 @@
 dependencies {
     annotationProcessor 'io.micronaut.validation:micronaut-validation-processor'
 
+    api 'io.micronaut:micronaut-context'
     implementation 'io.micronaut.validation:micronaut-validation'
     implementation "io.projectreactor:reactor-core:$projectReactorVersion"
     implementation 'io.micronaut:micronaut-jackson-databind'
