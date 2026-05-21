@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 plugins {
+    id 'lifecycle-base'
     id 'com.agorapulse.gradle.aggregate-test-reports'   version "${agorapulseAggregateReportsVersion}"
     id 'com.agorapulse.gradle.aggregate-jacoco-reports' version "${agorapulseGradlePluginsVersion}"
 }
