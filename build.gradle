@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2022-2024 Agorapulse.
+ * Copyright 2022-2026 Agorapulse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
  * limitations under the License.
  */
 plugins {
-    id 'org.kordamp.gradle.groovy-project'
-    id 'org.kordamp.gradle.checkstyle'
-    id 'org.kordamp.gradle.codenarc'
-    id 'org.kordamp.gradle.coveralls'
+    id 'com.agorapulse.gradle.aggregate-checkstyle-reports'
+    id 'com.agorapulse.gradle.aggregate-codenarc-reports'
+    id 'com.agorapulse.gradle.aggregate-jacoco-reports'
     id 'io.github.gradle-nexus.publish-plugin'
 }
 
@@ -28,88 +27,6 @@ if (!project.hasProperty('ossrhPassword'))      ext.ossrhPassword       = System
 if (!project.hasProperty('signingKeyId'))       ext.signingKeyId        = System.getenv('SIGNING_KEY_ID') ?: '**UNDEFINED**'
 if (!project.hasProperty('signingPassword'))    ext.signingPassword     = System.getenv('SIGNING_PASSWORD') ?: '**UNDEFINED**'
 if (!project.hasProperty('signingSecretKey'))   ext.signingSecretKey    = System.getenv('SIGNING_SECRET_KEY_PATH') ? rootProject.file(System.getenv('SIGNING_SECRET_KEY_PATH')).text : '**UNDEFINED**'
-
-config {
-    release = (rootProject.findProperty('release') ?: false).toBoolean()
-
-    info {
-        name        = 'Micronaut Newrelic'
-        vendor      = 'Agorapulse'
-        description = 'Micronaut Newrelic Library'
-
-        links {
-            website      = "https://github.com/" + slug
-            issueTracker = "https://github.com/" + slug + "/issues"
-            scm          = "https://github.com/" + slug + ".git"
-        }
-
-        people {
-            person {
-                id    = 'musketyr'
-                name  = 'Vladimir Orany'
-                roles = ['developer']
-            }
-        }
-
-        repositories {
-            repository {
-                name = 'localRelease'
-                url  = "" + project.rootProject.buildDir + "/repos/local/release"
-            }
-            repository {
-                name = 'localSnapshot'
-                url  = "" + project.rootProject.buildDir + "/repos/local/snapshot"
-            }
-        }
-    }
-
-    licensing {
-        licenses {
-            license {
-                id = 'Apache-2.0'
-            }
-        }
-    }
-
-    publishing {
-        enabled = false
-        signing {
-            enabled =  true
-            keyId = signingKeyId
-            secretKey = signingSecretKey
-            password = signingPassword
-        }
-        releasesRepository  = 'localRelease'
-        snapshotsRepository = 'localSnapshot'
-    }
-
-    quality {
-        checkstyle {
-            toolVersion = '8.27'
-        }
-
-        codenarc {
-            toolVersion = '1.5'
-        }
-    }
-
-    docs {
-        javadoc {
-            autoLinks {
-                enabled = false
-            }
-            aggregate {
-                enabled = false
-            }
-        }
-        groovydoc {
-            enabled = false
-            aggregate {
-                enabled = false
-            }
-        }
-    }
-}
 
 nexusPublishing {
     repositories {
@@ -125,74 +42,110 @@ nexusPublishing {
 allprojects {
     repositories {
         mavenCentral()
-        maven { url "https://repo.spring.io/release"  }
-    }
-
-    license {
-        exclude '**/*.json'
-        exclude '***.yml'
+        maven { url = 'https://repo.spring.io/release' }
     }
 }
 
-gradleProjects {
-    subprojects {
-        dirs(['libs', 'test-projects']) {
-            java {
-                toolchain {
-                    languageVersion = JavaLanguageVersion.of(25)
-                }
-            }
+def micronautModules = subprojects.findAll {
+    it.projectDir.parentFile.name in ['libs', 'test-projects']
+}
 
-            micronaut {
-                importMicronautPlatform = true
-                testRuntime 'spock'
-                processing {
-                    incremental false
-                }
-            }
-
-            // useful for Micronaut
-            tasks.withType(GroovyCompile) {
-                groovyOptions.forkOptions.jvmArgs.add('-Dgroovy.parameters=true')
-            }
-
-            // useful for Micronaut
-            tasks.withType(JavaCompile){
-                options.encoding = "UTF-8"
-                options.compilerArgs.add('-parameters')
-            }
-
-            // location independent tests (useful for stable CI builds)
-            tasks.withType(Test){
-                useJUnitPlatform()
-
-                systemProperty 'user.timezone', 'UTC'
-                systemProperty 'user.language', 'en'
-            }
-
-            // useful for IntelliJ
-            task cleanOut(type: Delete) {
-                delete file('out')
-            }
-
-            clean.dependsOn cleanOut
-
-            dependencies {
-                testCompileOnly 'io.micronaut:micronaut-inject-groovy'
-                testImplementation 'io.github.cjstehno.ersatz:ersatz:4.0.0'
-                testImplementation 'io.github.cjstehno.ersatz:ersatz-groovy:4.0.0'
+configure(micronautModules) { Project sub ->
+    sub.afterEvaluate {
+        sub.java {
+            toolchain {
+                languageVersion = JavaLanguageVersion.of(25)
             }
         }
 
-        dir('libs') {
-            config {
-                publishing {
-                    enabled = true
-                }
+        sub.micronaut {
+            importMicronautPlatform = true
+            testRuntime 'spock'
+            processing {
+                incremental false
             }
         }
     }
+
+    sub.tasks.withType(Test).configureEach {
+        useJUnitPlatform()
+        systemProperty 'user.timezone', 'UTC'
+        systemProperty 'user.language', 'en'
+    }
+
+    sub.tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+        options.compilerArgs.add('-parameters')
+    }
+
+    sub.tasks.withType(Javadoc).configureEach {
+        options.encoding = 'UTF-8'
+        options.addStringOption('Xdoclint:none', '-quiet')
+    }
+
+    sub.dependencies {
+        testCompileOnly 'io.micronaut:micronaut-inject-groovy'
+        testImplementation 'io.github.cjstehno.ersatz:ersatz:4.0.0'
+        testImplementation 'io.github.cjstehno.ersatz:ersatz-groovy:4.0.0'
+    }
 }
 
+def libModules = subprojects.findAll { it.projectDir.parentFile.name == 'libs' }
 
-check.dependsOn('aggregateCheckstyle', 'aggregateCodenarc', 'aggregateAllTestReports', 'coveralls')
+configure(libModules) { Project sub ->
+    sub.plugins.apply('maven-publish')
+    sub.plugins.apply('signing')
+
+    sub.java {
+        withJavadocJar()
+        withSourcesJar()
+    }
+
+    sub.publishing {
+        publications {
+            maven(MavenPublication) {
+                from sub.components.java
+                pom {
+                    name = sub.name
+                    description = 'Micronaut Newrelic Library'
+                    url = "https://github.com/${slug}"
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'musketyr'
+                            name = 'Vladimir Orany'
+                        }
+                    }
+                    scm {
+                        connection = "scm:git:git@github.com:${slug}.git"
+                        developerConnection = "scm:git:git@github.com:${slug}.git"
+                        url = "https://github.com/${slug}"
+                    }
+                }
+            }
+        }
+        repositories {
+            maven {
+                name = 'localRelease'
+                url = "${rootProject.layout.buildDirectory.get().asFile}/repos/local/release"
+            }
+            maven {
+                name = 'localSnapshot'
+                url = "${rootProject.layout.buildDirectory.get().asFile}/repos/local/snapshot"
+            }
+        }
+    }
+
+    boolean releasing = (rootProject.findProperty('release') ?: false).toBoolean()
+    if (releasing) {
+        sub.signing {
+            useInMemoryPgpKeys(signingKeyId, signingSecretKey, signingPassword)
+            sign sub.publishing.publications.maven
+        }
+    }
+}

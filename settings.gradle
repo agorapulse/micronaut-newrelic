@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2022-2024 Agorapulse.
+ * Copyright 2022-2026 Agorapulse.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,54 +17,53 @@
  */
 pluginManagement {
     repositories {
-        mavenCentral()
         gradlePluginPortal()
+        maven { url = uri('https://agorapulse.jfrog.io/agorapulse/gradle-plugins-releases-local/') }
+        mavenCentral()
     }
     plugins {
-        id 'org.kordamp.gradle.settings'                version kordampPluginVersion
-        id 'org.kordamp.gradle.groovy-project'          version kordampPluginVersion
-        id 'org.kordamp.gradle.bintray'                 version kordampPluginVersion
-        id 'org.kordamp.gradle.checkstyle'              version kordampPluginVersion
-        id 'org.kordamp.gradle.codenarc'                version kordampPluginVersion
-        id 'org.kordamp.gradle.guide'                   version kordampPluginVersion
-        id 'org.kordamp.gradle.coveralls'               version kordampPluginVersion
-        id 'org.ajoberstar.git-publish'                 version gitPublishPluginVersion
-        id 'io.github.gradle-nexus.publish-plugin'      version nexusPluginVersion
+        id 'com.agorapulse.gradle.settings'                     version agorapulseGradlePluginsVersion
+        id 'com.agorapulse.gradle.groovy-common-configuration'  version agorapulseGradlePluginsVersion
+        id 'com.agorapulse.gradle.micronaut-library'            version agorapulseGradlePluginsVersion
+        id 'com.agorapulse.gradle.micronaut-compatibility'      version agorapulseGradlePluginsVersion
+        id 'com.agorapulse.gradle.gradle-enterprise'            version agorapulseGradlePluginsVersion
+        id 'com.agorapulse.gradle.aggregate-checkstyle-reports' version agorapulseAggregateChecksVersion
+        id 'com.agorapulse.gradle.aggregate-codenarc-reports'   version agorapulseAggregateChecksVersion
+        id 'com.agorapulse.gradle.aggregate-jacoco-reports'     version agorapulseGradlePluginsVersion
+        id 'com.agorapulse.gradle.guide'                        version agorapulseGradlePluginsVersion
+        id 'org.ajoberstar.git-publish'                         version gitPublishPluginVersion
+        id 'io.github.gradle-nexus.publish-plugin'              version nexusPluginVersion
     }
 }
 
 buildscript {
     repositories {
-        mavenCentral()
         gradlePluginPortal()
+        maven { url = uri('https://agorapulse.jfrog.io/agorapulse/gradle-plugins-releases-local/') }
+        mavenCentral()
     }
     dependencies {
-        classpath group: 'io.micronaut.gradle', name: 'micronaut-minimal-plugin', version: micronautGradlePluginVersion
+        classpath "io.micronaut.gradle:micronaut-minimal-plugin:${micronautGradlePluginVersion}"
+        classpath "com.agorapulse.gradle:micronaut-library:${agorapulseGradlePluginsVersion}"
+        classpath "com.agorapulse.gradle:groovy-common-configuration:${agorapulseGradlePluginsVersion}"
     }
 }
 
 plugins {
-    id 'org.kordamp.gradle.settings'
-    id 'com.gradle.develocity' version '4.0'
+    id 'com.agorapulse.gradle.settings'
+    id 'com.agorapulse.gradle.gradle-enterprise'
 }
 
-develocity {
-    buildScan {
-        termsOfUseUrl = "https://gradle.com/terms-of-service"
-        termsOfUseAgree = "yes"
-    }
-}
-
-projects {
+gradleProjects {
     directories = ['libs', 'docs', 'test-projects']
 
     plugins {
         dirs(['libs', 'test-projects']) {
-            id 'io.micronaut.minimal.library'
+            id 'com.agorapulse.gradle.micronaut-library'
+            id 'com.agorapulse.gradle.groovy-common-configuration'
             id 'groovy'
         }
     }
 }
-
 
 rootProject.name = 'micronaut-newrelic-root'
