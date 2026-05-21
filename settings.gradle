@@ -26,6 +26,7 @@ pluginManagement {
         id 'com.agorapulse.gradle.groovy-common-configuration' version "${agorapulseGradlePluginsVersion}"
         id 'com.agorapulse.gradle.micronaut-compatibility'     version "${agorapulseGradlePluginsVersion}"
         id 'com.agorapulse.gradle.guide'                       version "${agorapulseGradlePluginsVersion}"
+        id 'com.vanniktech.maven.publish'                      version "${mavenCentralPublishPluginVersion}"
     }
 }
 
@@ -38,6 +39,7 @@ buildscript {
         classpath group: 'io.micronaut.gradle',   name: 'micronaut-minimal-plugin',     version: micronautGradlePluginVersion
         classpath group: 'com.agorapulse.gradle', name: 'micronaut-library',            version: agorapulseGradlePluginsVersion
         classpath group: 'com.agorapulse.gradle', name: 'groovy-common-configuration',  version: agorapulseGradlePluginsVersion
+        classpath group: 'com.vanniktech',        name: 'gradle-maven-publish-plugin',  version: mavenCentralPublishPluginVersion
     }
 }
 
@@ -55,6 +57,9 @@ gradleProjects {
             id 'groovy'
             id 'com.agorapulse.gradle.micronaut-library'
             id 'com.agorapulse.gradle.groovy-common-configuration'
+        }
+        dirs(['libs']) {
+            id 'com.vanniktech.maven.publish'
         }
     }
 }
