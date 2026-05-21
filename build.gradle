@@ -17,8 +17,6 @@
  */
 plugins {
     id 'lifecycle-base'
-    id 'com.agorapulse.gradle.aggregate-test-reports'   version "${agorapulseAggregateReportsVersion}"
-    id 'com.agorapulse.gradle.aggregate-jacoco-reports' version "${agorapulseGradlePluginsVersion}"
 }
 
 if (!project.hasProperty('mavenCentralUsername'))       ext.mavenCentralUsername       = System.getenv('MAVEN_CENTRAL_USERNAME') ?: '**UNDEFINED**'
@@ -87,8 +85,4 @@ subprojects {
             sign publishing.publications
         }
     }
-}
-
-tasks.named('check') {
-    dependsOn 'aggregateTestReports', 'aggregateJacocoReports'
 }
