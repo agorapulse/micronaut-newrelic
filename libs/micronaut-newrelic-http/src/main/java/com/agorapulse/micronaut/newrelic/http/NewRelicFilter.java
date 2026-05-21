@@ -24,8 +24,8 @@ import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.annotation.Filter;
 import io.micronaut.http.filter.HttpServerFilter;
 import io.micronaut.http.filter.ServerFilterChain;
-import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -35,11 +35,11 @@ public class NewRelicFilter implements HttpServerFilter {
     @Override
     public Publisher<MutableHttpResponse<?>> doFilter(HttpRequest<?> request, ServerFilterChain chain) {
         AtomicReference<Token> token = new AtomicReference<>();
-        return Flowable.fromCallable(() -> {
+        return Flux.defer(() -> {
             String templateOrUri = request.getAttribute(HttpAttributes.URI_TEMPLATE, String.class).orElseGet(() -> request.getUri().toString());
             token.set(NewRelicUtil.startTransaction(templateOrUri));
-            return true;
-        }).switchMap(any -> chain.proceed(request)).doOnNext(resp -> {
+            return chain.proceed(request);
+        }).doOnNext(resp -> {
             token.get().expire();
         });
     }
