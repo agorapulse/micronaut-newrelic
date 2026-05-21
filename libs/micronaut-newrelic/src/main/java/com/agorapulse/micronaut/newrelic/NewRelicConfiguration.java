@@ -18,7 +18,7 @@
 package com.agorapulse.micronaut.newrelic;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
-import io.micronaut.core.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.event.Level;
 
 @ConfigurationProperties("newrelic")

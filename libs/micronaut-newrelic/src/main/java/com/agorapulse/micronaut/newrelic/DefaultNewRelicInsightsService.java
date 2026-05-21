@@ -20,7 +20,7 @@ package com.agorapulse.micronaut.newrelic;
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.core.annotation.NonNull;
+import org.jspecify.annotations.NonNull;
 import jakarta.inject.Singleton;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;

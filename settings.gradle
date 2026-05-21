@@ -45,14 +45,13 @@ buildscript {
 
 plugins {
     id 'org.kordamp.gradle.settings'
-    id 'com.gradle.enterprise' version '3.15.1'
+    id 'com.gradle.develocity' version '4.0'
 }
 
-gradleEnterprise {
+develocity {
     buildScan {
-        publishAlways()
-        termsOfServiceUrl = "https://gradle.com/terms-of-service"
-        termsOfServiceAgree = "yes"
+        termsOfUseUrl = "https://gradle.com/terms-of-service"
+        termsOfUseAgree = "yes"
     }
 }
 

@@ -24,7 +24,7 @@ import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.annotation.Filter;
 import io.micronaut.http.filter.HttpServerFilter;
 import io.micronaut.http.filter.ServerFilterChain;
-import io.reactivex.Flowable;
+import io.reactivex.rxjava3.core.Flowable;
 import org.reactivestreams.Publisher;
 
 import java.util.concurrent.atomic.AtomicReference;

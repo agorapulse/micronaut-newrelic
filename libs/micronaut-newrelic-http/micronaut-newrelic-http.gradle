@@ -23,7 +23,7 @@ dependencies {
     api project(':micronaut-newrelic')
     api 'io.micronaut:micronaut-http'
     api 'com.newrelic.agent.java:newrelic-api:4.9.0'
-    api 'io.reactivex.rxjava2:rxjava'
+    api 'io.micronaut.rxjava3:micronaut-rxjava3'
 
     testImplementation 'io.micronaut:micronaut-http-server-netty'
     testImplementation 'com.agorapulse:gru-micronaut:2.0.4'
