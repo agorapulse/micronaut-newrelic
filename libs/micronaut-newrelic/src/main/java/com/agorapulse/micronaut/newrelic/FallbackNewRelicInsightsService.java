@@ -17,11 +17,10 @@
  */
 package com.agorapulse.micronaut.newrelic;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micronaut.context.annotation.Secondary;
 import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.json.JsonMapper;
 import io.micronaut.runtime.context.scope.Refreshable;
 import io.micronaut.runtime.context.scope.refresh.RefreshEvent;
 import jakarta.inject.Singleton;
@@ -29,6 +28,7 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
@@ -45,11 +45,11 @@ public class FallbackNewRelicInsightsService implements NewRelicInsightsService,
     private static final Logger LOGGER = LoggerFactory.getLogger(NewRelicInsightsService.class);
 
     private final EventPayloadExtractor extractor;
-    private final ObjectMapper mapper;
+    private final JsonMapper mapper;
     private final Deque<Object> events = new ArrayDeque<>();
 
     public FallbackNewRelicInsightsService(EventPayloadExtractor extractor,
-                                           ObjectMapper mapper) {
+                                           JsonMapper mapper) {
         this.extractor = extractor;
         this.mapper = mapper;
     }
@@ -63,7 +63,7 @@ public class FallbackNewRelicInsightsService implements NewRelicInsightsService,
     public <E> void createEvents(Collection<E> events) {
         try {
             List<Map<String, Object>> payloads = events.stream().map(extractor::extractPayload).toList();
-            LOGGER.info("Following events not sent to NewRelic:\n{}", mapper.writerWithDefaultPrettyPrinter().writeValueAsString(payloads));
+            LOGGER.info("Following events not sent to NewRelic:\n{}", mapper.writeValueAsString(payloads));
 
             this.events.addAll(events);
 
@@ -72,7 +72,7 @@ public class FallbackNewRelicInsightsService implements NewRelicInsightsService,
             }
 
             LOGGER.info("You can access {} event(s) using FallbackNewRelicInsightsService#getEvents() method.", this.events.size());
-        } catch (JsonProcessingException e) {
+        } catch (IOException e) {
             throw new IllegalArgumentException(e);
         }
     }
