@@ -23,10 +23,13 @@ pluginManagement {
     }
     plugins {
         id 'com.agorapulse.gradle.settings'                     version agorapulseGradlePluginsVersion
+        id 'com.agorapulse.gradle.gradle-enterprise'            version agorapulseGradlePluginsVersion
+        id 'com.agorapulse.gradle.remote-cache'                 version agorapulseGradlePluginsVersion
+        id 'com.agorapulse.gradle.internal-version-catalog'     version agorapulseGradlePluginsVersion
         id 'com.agorapulse.gradle.groovy-common-configuration'  version agorapulseGradlePluginsVersion
         id 'com.agorapulse.gradle.micronaut-library'            version agorapulseGradlePluginsVersion
         id 'com.agorapulse.gradle.micronaut-compatibility'      version agorapulseGradlePluginsVersion
-        id 'com.agorapulse.gradle.gradle-enterprise'            version agorapulseGradlePluginsVersion
+        id 'com.agorapulse.gradle.error-prone'                  version agorapulseGradlePluginsVersion
         id 'com.agorapulse.gradle.aggregate-checkstyle-reports' version agorapulseAggregateChecksVersion
         id 'com.agorapulse.gradle.aggregate-codenarc-reports'   version agorapulseAggregateChecksVersion
         id 'com.agorapulse.gradle.aggregate-jacoco-reports'     version agorapulseGradlePluginsVersion
@@ -45,13 +48,17 @@ buildscript {
     dependencies {
         classpath "io.micronaut.gradle:micronaut-minimal-plugin:${micronautGradlePluginVersion}"
         classpath "com.agorapulse.gradle:micronaut-library:${agorapulseGradlePluginsVersion}"
+        classpath "com.agorapulse.gradle:micronaut-compatibility:${agorapulseGradlePluginsVersion}"
         classpath "com.agorapulse.gradle:groovy-common-configuration:${agorapulseGradlePluginsVersion}"
+        classpath "com.agorapulse.gradle:error-prone:${agorapulseGradlePluginsVersion}"
     }
 }
 
 plugins {
     id 'com.agorapulse.gradle.settings'
     id 'com.agorapulse.gradle.gradle-enterprise'
+    id 'com.agorapulse.gradle.remote-cache'
+    id 'com.agorapulse.gradle.internal-version-catalog'
 }
 
 gradleProjects {
@@ -59,9 +66,11 @@ gradleProjects {
 
     plugins {
         dirs(['libs', 'test-projects']) {
+            id 'groovy'
             id 'com.agorapulse.gradle.micronaut-library'
             id 'com.agorapulse.gradle.groovy-common-configuration'
-            id 'groovy'
+            id 'com.agorapulse.gradle.micronaut-compatibility'
+            id 'com.agorapulse.gradle.error-prone'
         }
     }
 }
